@@ -9,7 +9,7 @@ function App() {
     <>
       <Header />
       <main>Body</main>
-      <div id="modal-root"/>
+      <div id="modal-root" />
     </>
   );
 }

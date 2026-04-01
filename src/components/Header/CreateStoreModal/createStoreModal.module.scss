@@ -1,0 +1,51 @@
+.input {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid rgba(100, 116, 139, 0.35);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  color: var(--color-text-strong);
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+}
+
+.actions {
+  margin-top: 14px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.save,
+.cancel {
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.save {
+  background: var(--color-success);
+  color: var(--color-white);
+}
+
+.save:hover {
+  background: var(--color-success-hover);
+}
+
+.cancel {
+  background: rgba(100, 116, 139, 0.14);
+  color: var(--color-text-strong);
+}
+
+.cancel:hover {
+  background: rgba(100, 116, 139, 0.24);
+}

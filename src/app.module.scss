@@ -1,5 +1,20 @@
+:root {
+  --color-white: rgba(255, 255, 255, 1);
+  --color-text-strong: rgba(17, 24, 39, 1);
+  --color-text-body: rgba(55, 65, 81, 1);
+  --color-text-muted: rgba(100, 116, 139, 1);
+  --color-overlay: rgba(0, 0, 0, 0.5);
+  --color-shadow-soft: rgba(0, 0, 0, 0.1);
+  --color-shadow-strong: rgba(0, 0, 0, 0.22);
+  --color-success: rgba(22, 163, 74, 1);
+  --color-success-hover: rgba(21, 128, 61, 1);
+  --color-hover-surface: rgba(242, 244, 247, 1);
+  --color-icon: rgba(34, 34, 34, 1);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+}
+
 body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }

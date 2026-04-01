@@ -2,8 +2,8 @@ header {
   position: sticky;
   top: 0;
   z-index: 40;
-  background: #ffffff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: var(--color-white);
+  box-shadow: 0 1px 3px var(--color-shadow-soft);
 
   div {
     display: flex;
@@ -12,27 +12,27 @@ header {
     padding: 0 18px;
 
     .inactive {
-      color: #64748b;
+      color: var(--color-text-muted);
     }
     .active {
-      // TODO: add colors
+      color: var(--color-text-strong);
     }
   }
 
   button {
     display: inline-flex;
     align-items: center;
-    background-color: #16a34a;
-    color: #ffffff;
+    background-color: var(--color-success);
+    color: var(--color-white);
     font-weight: 600;
     padding: 8px 16px;
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     transition: background-color 0.3s ease;
     border: none;
     cursor: pointer;
 
     &:hover {
-      background-color: #15803d;
+      background-color: var(--color-success-hover);
     }
   }
 }

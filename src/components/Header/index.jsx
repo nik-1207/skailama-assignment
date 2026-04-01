@@ -1,12 +1,12 @@
 import { CirclePlus } from "lucide-react";
 import { useShopStore } from "../../stores/shop.store";
+import { useModalStore } from "./CreateStoreModal/modal.store";
 import styles from "./header.module.scss";
-import { useModalStore } from "../CreateStoreModal/modal.store";
-import { Modal } from "../CreateStoreModal";
+import { CreateStoreModal } from "./CreateStoreModal";
 
 export const Header = () => {
   const activeShop = useShopStore((state) => state.activeShop);
-  const openModal = useModalStore((state) => state.openModal);
+  const open = useModalStore((state) => state.openModal);
 
   return (
     <header>
@@ -14,15 +14,12 @@ export const Header = () => {
         <h3 className={activeShop ? styles.active : styles.inactive}>
           {activeShop ?? "No Active Shop"}
         </h3>
-        <button onClick={openModal}>
+        <button onClick={open}>
           <CirclePlus size={20} />
-          Select Shop
+          Create Shop
         </button>
-        <Modal>
-          <h2>Create Store</h2>
-          <p>Modal content goes here</p>
-        </Modal>
       </div>
+      <CreateStoreModal />
     </header>
   );
 };
