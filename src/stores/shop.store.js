@@ -8,6 +8,8 @@ export const useShopStore = create((set) => ({
   loadShops: () => set({ shops: getStores() }),
   addShop: (shop) => {
     createStore(shop)
-    set([...state.shops, shop])
+    set((state) => ({
+      shops: [...state.shops, shop],
+    }));
   }
 }));
