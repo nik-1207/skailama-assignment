@@ -6,6 +6,23 @@ header {
   box-shadow: 0 1px 3px var(--color-shadow-soft);
 }
 
+button {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-success);
+  color: var(--color-white);
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--color-success-hover);
+}
+
 .container {
   display: flex;
   justify-content: space-between;
@@ -42,19 +59,10 @@ header {
   box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
 }
 
-button {
-  display: inline-flex;
-  align-items: center;
-  background-color: var(--color-success);
-  color: var(--color-white);
-  font-weight: 600;
-  padding: 8px 16px;
-  border-radius: var(--radius-sm);
-  transition: background-color 0.3s ease;
-  border: none;
-  cursor: pointer;
+.activeShopTitle, .activeShopName {
+  font-weight: bold;
+}
+.activeShopName {
+  color: var(--color-text-primary);
 }
 
-button:hover {
-  background-color: var(--color-success-hover);
-}
