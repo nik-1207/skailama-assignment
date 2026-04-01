@@ -2,6 +2,7 @@ import { Modal } from "../../Modal";
 import { useModalStore } from "./modal.store";
 import { useState } from "react";
 import styles from "./createStoreModal.module.scss";
+import { createStore } from "../../../api";
 
 export const CreateStoreModal = () => {
   const close = useModalStore((state) => state.closeModal);
@@ -14,7 +15,8 @@ export const CreateStoreModal = () => {
   };
 
   const onSave = () => {
-    // todo: create store
+    createStore(store)
+    close()
   };
 
   const onCancel = () => {
