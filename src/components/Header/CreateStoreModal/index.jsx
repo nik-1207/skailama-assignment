@@ -15,8 +15,10 @@ export const CreateStoreModal = () => {
   };
 
   const onSave = () => {
-    createStore(store)
-    onCancel()
+    const name = store.trim();
+    if (!name) return;
+    createStore(name);
+    onCancel();
   };
 
   const onCancel = () => {
