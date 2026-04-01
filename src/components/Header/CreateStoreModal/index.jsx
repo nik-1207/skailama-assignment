@@ -16,7 +16,7 @@ export const CreateStoreModal = () => {
 
   const onSave = () => {
     createStore(store)
-    close()
+    onCancel()
   };
 
   const onCancel = () => {
