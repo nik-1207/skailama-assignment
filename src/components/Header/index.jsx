@@ -21,7 +21,7 @@ export const Header = () => {
   };
 
   return (
-    <header>
+    <header className={styles.header}>
       <div className={styles.container}>
         <h3 className={activeShop ? styles.active : styles.inactive}>
           {!activeShop.trim() ? (
@@ -44,7 +44,7 @@ export const Header = () => {
               </option>
             ))}
           </select>
-          <button onClick={open}>
+          <button onClick={open} className={styles.button}>
             <CirclePlus size={20} />
             Create Shop
           </button>
