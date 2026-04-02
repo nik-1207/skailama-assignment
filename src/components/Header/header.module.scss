@@ -59,10 +59,10 @@ button:hover {
   box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
 }
 
-.activeShopTitle, .activeShopName {
+.activeShopTitle,
+.activeShopName {
   font-weight: bold;
 }
 .activeShopName {
   color: var(--color-text-primary);
 }
-

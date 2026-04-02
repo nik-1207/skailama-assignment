@@ -1,14 +1,14 @@
-import { useState } from "react";
 import { Header } from "./components/Header";
+import { Home } from "./components/Home";
 import "./app.scss";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <Header />
-      <main>Body</main>
+      <main>
+        <Home />
+      </main>
       <div id="modal-root" />
     </>
   );

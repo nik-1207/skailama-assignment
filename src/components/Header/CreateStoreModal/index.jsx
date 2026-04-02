@@ -7,7 +7,7 @@ import styles from "./createStoreModal.module.scss";
 export const CreateStoreModal = () => {
   const close = useModalStore((state) => state.closeModal);
   const isOpen = useModalStore((state) => state.isOpen);
-  const addShop = useShopStore((state) => state.addShop)
+  const addShop = useShopStore((state) => state.addShop);
 
   const [store, setStore] = useState("");
 

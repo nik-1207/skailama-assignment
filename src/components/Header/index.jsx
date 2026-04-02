@@ -24,7 +24,14 @@ export const Header = () => {
     <header>
       <div className={styles.container}>
         <h3 className={activeShop ? styles.active : styles.inactive}>
-          {!activeShop.trim() ? "No Active Shop" : <><span className={styles.activeShopTitle}>Active Shop: </span><span className={styles.activeShopName}>{activeShop}</span></>}
+          {!activeShop.trim() ? (
+            "No Active Shop"
+          ) : (
+            <>
+              <span className={styles.activeShopTitle}>Active Shop: </span>
+              <span className={styles.activeShopName}>{activeShop}</span>
+            </>
+          )}
         </h3>
         <div className={styles.controls}>
           <select className={styles.select} value={activeShop} onChange={onChangeShop}>
