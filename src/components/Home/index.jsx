@@ -10,18 +10,19 @@ export const Home = () => {
       <p>{!activeStore ? "Please select a store to begin." : `Managing store: ${activeStore}`}</p>
       <div>
         {Cards.map((ele) => {
-            const Icon = ele.icon
-            return (
-                <Card key={ele.title}>
+          const Icon = ele.icon;
+          return (
+            <Card key={ele.title}>
+              <div>
                 <div>
-                  <div>
-                    <Icon/> <span>{ele.title}</span>
-                  </div>
-                  <p>{ele.description}</p>
-                  <button>{ele.action}</button>
+                  <Icon /> <span>{ele.title}</span>
                 </div>
-              </Card>
-        )})}
+                <p>{ele.description}</p>
+                <button>{ele.action}</button>
+              </div>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );
