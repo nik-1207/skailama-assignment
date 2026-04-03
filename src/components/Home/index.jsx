@@ -1,6 +1,7 @@
 import { useShopStore } from "../../stores/shop.store";
 import { Card } from "../Card";
 import { Cards } from "./utils";
+import styles from "./home.module.scss"
 
 export const Home = () => {
   const activeStore = useShopStore((state) => state.activeShop);
