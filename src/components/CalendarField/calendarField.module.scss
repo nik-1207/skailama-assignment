@@ -1,0 +1,39 @@
+.field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-strong);
+}
+
+.field input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 50px;
+  padding: 14px 46px 14px 16px;
+  border: 1px solid rgba(203, 213, 225, 1);
+  border-radius: 12px;
+  background: rgba(248, 250, 252, 1);
+  color: var(--color-text-strong);
+  font-size: 1rem;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+  background: var(--color-white);
+}
+
+.icon {
+  position: absolute;
+  right: 14px;
+  bottom: 16px;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}

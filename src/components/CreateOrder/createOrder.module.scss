@@ -57,22 +57,6 @@
   background: var(--color-white);
 }
 
-.dateField {
-  position: relative;
-}
-
-.dateField input {
-  padding-right: 46px;
-}
-
-.icon {
-  position: absolute;
-  right: 14px;
-  bottom: 16px;
-  color: var(--color-text-muted);
-  pointer-events: none;
-}
-
 .actions {
   display: flex;
   justify-content: flex-end;
@@ -113,7 +97,7 @@
 }
 
 @media (max-width: 768px) {
-  .wrap {
+  .container {
     padding: 16px;
   }
 

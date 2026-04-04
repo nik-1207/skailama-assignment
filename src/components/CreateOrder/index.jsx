@@ -1,5 +1,5 @@
-import { CalendarDays } from "lucide-react";
 import { Card } from "../Card";
+import { CalendarField } from "../CalendarField";
 import { useShopStore } from "../../stores/shop.store";
 import styles from "./createOrder.module.scss";
 
@@ -48,11 +48,7 @@ export const CreateOrder = () => {
             <input id="orderAmount" name="orderAmount" type="text" />
           </div>
 
-          <div className={`${styles.field} ${styles.dateField}`}>
-            <label htmlFor="orderCreatedAt">Order Created At</label>
-            <input id="orderCreatedAt" name="orderCreatedAt" type="datetime-local" />
-            <CalendarDays className={styles.icon} size={18} />
-          </div>
+          <CalendarField id="orderCreatedAt" name="orderCreatedAt" label="Order Created At" />
 
           <div className={styles.actions}>
             <button className={styles.primaryButton} type="submit">
