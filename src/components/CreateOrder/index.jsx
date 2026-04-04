@@ -165,7 +165,7 @@ export const CreateOrder = () => {
 
           <div className={styles.actions}>
             <button className={styles.primaryButton} type="submit">
-              crete order
+              create order
             </button>
             <button className={styles.secondaryButton} type="button">
               Cancel
