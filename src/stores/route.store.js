@@ -7,6 +7,13 @@ export const ROUTE_CUSTOMERS = "view-customers";
 
 export const ROUTES = [ROUTE_HOME, ROUTE_ORDERS, ROUTE_CAMPAIGNS, ROUTE_CUSTOMERS];
 
+export const ROUTE_LABELS = {
+  [ROUTE_HOME]: "Home",
+  [ROUTE_ORDERS]: "Create Order",
+  [ROUTE_CAMPAIGNS]: "Campaigns",
+  [ROUTE_CUSTOMERS]: "Customers",
+};
+
 function isValidRoute(route) {
   return ROUTES.includes(route);
 }
@@ -14,7 +21,11 @@ function isValidRoute(route) {
 export const useRouteStore = create((set) => ({
   route: ROUTE_HOME,
   setRoute: (next) => {
-    if (!isValidRoute(next)) return;
-    set({ route: next });
+    if (isValidRoute(next)) {
+      set({ route: next });
+    } else {
+      console.error(`Invalid route: ${next}`);
+    }
+
   },
 }));
