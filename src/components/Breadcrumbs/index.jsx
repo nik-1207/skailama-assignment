@@ -4,6 +4,7 @@ import {
   ROUTE_LABELS,
   useRouteStore,
 } from "../../stores/route.store";
+import styles from "./breadcrumbs.module.scss";
 
 export const Breadcrumbs = () => {
   const route = useRouteStore((state) => state.route);
@@ -11,14 +12,19 @@ export const Breadcrumbs = () => {
   const currentLabel = ROUTE_LABELS[route];
 
   return (
-    <nav>
-      <button type="button" onClick={() => setRoute(ROUTE_HOME)}>
-        <Home size={18} aria-hidden />
+    <nav className={styles.breadcrumbs}>
+      <button
+        className={styles.homeButton}
+        onClick={() => setRoute(ROUTE_HOME)}
+      >
+        <Home size={18} />
       </button>
-      <span>
+      <span className={styles.chevron}>
         <ChevronRight size={16} />
       </span>
-      <span>{currentLabel}</span>
+      <span className={styles.current}>
+        {currentLabel}
+      </span>
     </nav>
   );
-}
+};

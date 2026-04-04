@@ -11,12 +11,14 @@ function App() {
     <>
       <Header />
       <main>
-        {route !== ROUTE_HOME ? <Breadcrumbs /> : null}
-        
+
         {route === ROUTE_HOME ? <Home /> : null}
-        {route === ROUTE_ORDERS ? <>create-order</> : null}
-        {route === ROUTE_CAMPAIGNS ? <>create-campaigns</> : null}
-        {route === ROUTE_CUSTOMERS ? <>customers</> : null}
+        <div className="content">
+          {route !== ROUTE_HOME ? <Breadcrumbs /> : null}
+          {route === ROUTE_ORDERS ? <>create-order</> : null}
+          {route === ROUTE_CAMPAIGNS ? <>create-campaigns</> : null}
+          {route === ROUTE_CUSTOMERS ? <>customers</> : null}
+        </div>
       </main>
       <div id="modal-root" />
     </>

@@ -1,0 +1,40 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: var(--color-white);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.homeButton {
+  padding: 4px;
+  line-height: 0;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.homeButton:hover {
+  color: var(--color-text-strong);
+  background: var(--color-hover-surface);
+}
+
+
+.chevron {
+  margin-top: 2px;
+  color: var(--color-text-muted);
+}
+
+.current {
+  gap: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text-strong);
+}
+
