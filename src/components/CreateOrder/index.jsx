@@ -1,8 +1,11 @@
 import { CalendarDays } from "lucide-react";
 import { Card } from "../Card";
+import { useShopStore } from "../../stores/shop.store";
 import styles from "./createOrder.module.scss";
 
 export const CreateOrder = () => {
+  const activeShop = useShopStore((state) => state.activeShop);
+
   return (
     <div className={styles.container}>
       <Card className={styles.card}>
@@ -11,7 +14,7 @@ export const CreateOrder = () => {
         <form className={styles.form}>
           <div className={styles.field}>
             <label htmlFor="storeName">Store Name</label>
-            <input id="storeName" name="storeName" type="text" defaultValue="asd" />
+            <input id="storeName" name="storeName" type="text" value={activeShop} readOnly />
           </div>
 
           <div className={styles.field}>
@@ -37,7 +40,7 @@ export const CreateOrder = () => {
 
           <div className={styles.field}>
             <label htmlFor="orderId">Order ID</label>
-            <input id="orderId" name="orderId" type="text" defaultValue="ORD-1775322968386" />
+            <input id="orderId" name="orderId" type="text" />
           </div>
 
           <div className={styles.field}>
@@ -47,12 +50,7 @@ export const CreateOrder = () => {
 
           <div className={`${styles.field} ${styles.dateField}`}>
             <label htmlFor="orderCreatedAt">Order Created At</label>
-            <input
-              id="orderCreatedAt"
-              name="orderCreatedAt"
-              type="datetime-local"
-              defaultValue="2026-04-04T17:16"
-            />
+            <input id="orderCreatedAt" name="orderCreatedAt" type="datetime-local" />
             <CalendarDays className={styles.icon} size={18} />
           </div>
 
