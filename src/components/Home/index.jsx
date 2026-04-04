@@ -13,7 +13,7 @@ export const Home = () => {
       <div className={styles.headerWrapper}>
         <h1 className={styles.heading}>Cashback System Dashboard</h1>
         <p className={styles.subtitle}>
-          {!activeStore ? "Please select a store to begin." : `Managing store: ${activeStore}`}
+          {!activeStore ? "Please select a store to begin." : `Managing store: ${activeStore.name}`}
         </p>
       </div>
       <div className={styles.container}>

@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { createStore, getStores } from "../api";
 
 export const useShopStore = create((set) => ({
-  activeShop: "",
+  activeShop: null,
   shops: [],
   setActiveShop: (shop) => set({ activeShop: shop }),
   loadShops: () => set({ shops: getStores() }),

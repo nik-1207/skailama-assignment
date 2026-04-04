@@ -15,7 +15,7 @@
   width: 100%;
   box-sizing: border-box;
   min-height: 50px;
-  padding: 14px 46px 14px 16px;
+  padding: 14px 16px;
   border: 1px solid rgba(203, 213, 225, 1);
   border-radius: 12px;
   background: rgba(248, 250, 252, 1);
@@ -30,10 +30,8 @@
   background: var(--color-white);
 }
 
-.icon {
-  position: absolute;
-  right: 14px;
-  bottom: 16px;
-  color: var(--color-text-muted);
-  pointer-events: none;
+.error {
+  margin: 0;
+  font-size: 0.875rem;
+  color: rgba(220, 38, 38, 1);
 }

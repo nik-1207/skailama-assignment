@@ -17,29 +17,30 @@ export const Header = () => {
   }, [loadShops]);
 
   const onChangeShop = (event) => {
-    setActiveShop(event.target.value);
+    const selectedShop = shops.find((shop) => shop.id === event.target.value) ?? null;
+    setActiveShop(selectedShop);
   };
 
   return (
     <header className={styles.header}>
       <div className={styles.container}>
         <h3 className={activeShop ? styles.active : styles.inactive}>
-          {!activeShop.trim() ? (
+          {!activeShop ? (
             "No Active Shop"
           ) : (
             <>
               <span className={styles.activeShopTitle}>Active Shop: </span>
-              <span className={styles.activeShopName}>{activeShop}</span>
+              <span className={styles.activeShopName}>{activeShop.name}</span>
             </>
           )}
         </h3>
         <div className={styles.controls}>
-          <select className={styles.select} value={activeShop} onChange={onChangeShop}>
+          <select className={styles.select} value={activeShop?.id ?? ""} onChange={onChangeShop}>
             <option value="" disabled>
               Select shop
             </option>
             {shops.map((shop) => (
-              <option key={shop.id} value={shop.name}>
+              <option key={shop.id} value={shop.id}>
                 {shop.name}
               </option>
             ))}

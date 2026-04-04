@@ -20,6 +20,12 @@
   gap: 18px;
 }
 
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
 .field {
   display: flex;
   flex-direction: column;
@@ -52,6 +58,12 @@
   border-color: rgba(59, 130, 246, 0.7);
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
   background: var(--color-white);
+}
+
+.error {
+  margin: 0;
+  font-size: 0.875rem;
+  color: rgba(220, 38, 38, 1);
 }
 
 .actions {
@@ -96,6 +108,10 @@
 @media (max-width: 768px) {
   .container {
     padding: 16px;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
   }
 
   .actions {
