@@ -104,3 +104,15 @@
 .cardButton:active {
   transform: translateY(1px);
 }
+
+.cardButton:disabled {
+  opacity: 0.85;
+  cursor: not-allowed;
+  filter: grayscale(0.25);
+}
+
+.cardButton:disabled:hover,
+.cardButton:disabled:active {
+  filter: grayscale(0.25);
+  transform: none;
+}

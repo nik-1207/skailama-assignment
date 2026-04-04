@@ -5,6 +5,7 @@ import styles from "./home.module.scss";
 
 export const Home = () => {
   const activeStore = useShopStore((state) => state.activeShop);
+
   return (
     <div className={styles.home}>
       <div className={styles.headerWrapper}>
@@ -17,7 +18,7 @@ export const Home = () => {
         {Cards.map((ele) => {
           const Icon = ele.icon;
           return (
-            <Card key={ele.title} className={styles.card}>
+            <Card key={ele.title} className={styles.card} disabled={!activeStore}>
               <div className={styles.cardHeader}>
                 <div className={styles.iconWrap} aria-hidden>
                   <Icon size={30}/>
@@ -25,7 +26,7 @@ export const Home = () => {
                 <span className={styles.cardTitle}>{ele.title}</span>
               </div>
               <p className={styles.cardDescription}>{ele.description}</p>
-              <button type="button" className={styles.cardButton}>
+              <button type="button" className={styles.cardButton} disabled={!activeStore}>
                 {ele.action}
               </button>
             </Card>

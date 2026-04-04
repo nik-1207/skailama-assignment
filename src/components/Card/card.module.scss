@@ -6,4 +6,11 @@
     display: flex;
     flex-direction: column;
   }
+
+.disabled {
+  opacity: 0.55;
+  pointer-events: none;
+  cursor: not-allowed;
+  user-select: none;
+}
   
