@@ -1,0 +1,132 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px 24px 24px;
+}
+
+.card {
+  gap: 0;
+}
+
+.title {
+  margin: 0 0 20px;
+  font-size: 1.5rem;
+  color: var(--color-text-strong);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-strong);
+}
+
+.field input {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 50px;
+  padding: 14px 16px;
+  border: 1px solid rgba(203, 213, 225, 1);
+  border-radius: 12px;
+  background: rgba(248, 250, 252, 1);
+  color: var(--color-text-strong);
+  font-size: 1rem;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+  background: var(--color-white);
+}
+
+.dateField {
+  position: relative;
+}
+
+.dateField input {
+  padding-right: 46px;
+}
+
+.icon {
+  position: absolute;
+  right: 14px;
+  bottom: 16px;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(226, 232, 240, 1);
+}
+
+.primaryButton,
+.secondaryButton {
+  min-width: 128px;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primaryButton {
+  border: none;
+  background: var(--color-success);
+  color: var(--color-white);
+}
+
+.primaryButton:hover {
+  background: var(--color-success-hover);
+}
+
+.secondaryButton {
+  border: 1px solid rgba(203, 213, 225, 1);
+  background: var(--color-white);
+  color: var(--color-text-body);
+}
+
+.secondaryButton:hover {
+  background: rgba(241, 245, 249, 1);
+}
+
+@media (max-width: 768px) {
+  .wrap {
+    padding: 16px;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    width: 100%;
+  }
+}
