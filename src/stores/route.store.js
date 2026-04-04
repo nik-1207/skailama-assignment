@@ -26,6 +26,5 @@ export const useRouteStore = create((set) => ({
     } else {
       console.error(`Invalid route: ${next}`);
     }
-
   },
 }));

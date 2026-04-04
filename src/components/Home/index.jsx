@@ -8,7 +8,6 @@ export const Home = () => {
   const activeStore = useShopStore((state) => state.activeShop);
   const setRoute = useRouteStore((state) => state.setRoute);
 
-
   return (
     <div className={styles.home}>
       <div className={styles.headerWrapper}>
@@ -29,7 +28,11 @@ export const Home = () => {
                 <span className={styles.cardTitle}>{ele.title}</span>
               </div>
               <p className={styles.cardDescription}>{ele.description}</p>
-              <button className={styles.cardButton} disabled={!activeStore} onClick={() => setRoute(ele.action.path)}>
+              <button
+                className={styles.cardButton}
+                disabled={!activeStore}
+                onClick={() => setRoute(ele.action.path)}
+              >
                 {ele.action.title}
               </button>
             </Card>

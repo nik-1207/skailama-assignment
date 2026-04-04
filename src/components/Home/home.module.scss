@@ -37,11 +37,11 @@
   .container {
     display: flex;
     flex-direction: column;
-    gap: 16px
+    gap: 16px;
   }
 
   .home {
-   padding: 40px 16px
+    padding: 40px 16px;
   }
   .card {
     box-shadow:
@@ -94,7 +94,9 @@
   font-size: 0.9375rem;
   font-weight: 700;
   cursor: pointer;
-  transition: filter 0.15s ease, transform 0.15s ease;
+  transition:
+    filter 0.15s ease,
+    transform 0.15s ease;
 }
 
 .cardButton:hover {

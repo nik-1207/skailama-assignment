@@ -7,7 +7,7 @@ export const Cards = [
     description: "Simulate a new order to test cashback processing.",
     action: {
       title: "Create order",
-      path: "create-order"
+      path: "create-order",
     },
   },
   {
@@ -16,7 +16,7 @@ export const Cards = [
     description: "Create, view, and manage all your cashback campaigns.",
     action: {
       title: "Configure campaigns",
-      path: "configure-campaigns"
+      path: "configure-campaigns",
     },
   },
   {
@@ -25,8 +25,7 @@ export const Cards = [
     description: "View customer data, cashback balances, and transaction history.",
     action: {
       title: "View customers",
-      path: "view-customers"
+      path: "view-customers",
     },
-    
   },
 ];
