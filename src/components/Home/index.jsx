@@ -29,7 +29,7 @@ export const Home = () => {
                 <span className={styles.cardTitle}>{ele.title}</span>
               </div>
               <p className={styles.cardDescription}>{ele.description}</p>
-              <button type="button" className={styles.cardButton} disabled={!activeStore} onClick={() => setRoute(ele.action.path)}>
+              <button className={styles.cardButton} disabled={!activeStore} onClick={() => setRoute(ele.action.path)}>
                 {ele.action.title}
               </button>
             </Card>
