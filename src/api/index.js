@@ -9,3 +9,31 @@ export const createStore = (name) => {
 };
 
 export const getStores = () => JSON.parse(localStorage.getItem("stores") ?? "[]");
+
+export const createUser = ({ email, firstName, lastName }) => {
+  const user = {
+    id: crypto.randomUUID(),
+    firstName,
+    lastName,
+    email,
+  };
+  const items = localStorage.getItem("users");
+  localStorage.setItem("users", JSON.stringify([...JSON.parse(items ?? "[]"), user]));
+  return user;
+};
+
+export const getUsers = () => JSON.parse(localStorage.getItem("users") ?? "[]");
+
+export const seedUsers = (users) => {
+  localStorage.setItem(
+    "users",
+    JSON.stringify(
+      users.map((user) => ({
+        id: crypto.randomUUID(),
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+      })),
+    ),
+  );
+};

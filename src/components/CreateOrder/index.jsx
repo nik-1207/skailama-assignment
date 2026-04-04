@@ -1,10 +1,12 @@
 import { Card } from "../Card";
 import { CalendarField } from "../CalendarField";
 import { useShopStore } from "../../stores/shop.store";
+import { useCustomerStore } from "../../stores/customer.store";
 import styles from "./createOrder.module.scss";
 
 export const CreateOrder = () => {
   const activeShop = useShopStore((state) => state.activeShop);
+  const customers = useCustomerStore((state) => state.customers);
 
   return (
     <div className={styles.container}>
@@ -19,23 +21,21 @@ export const CreateOrder = () => {
 
           <div className={styles.field}>
             <label htmlFor="customerId">Customer ID</label>
-            <input id="customerId" name="customerId" type="text" />
+            <select id="customerId" name="customerId" defaultValue="">
+              <option value="" disabled>
+                Select customer
+              </option>
+              {customers.map((customer) => (
+                <option key={customer.id} value={customer.id}>
+                  {customer.id}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className={styles.field}>
             <label htmlFor="customerEmail">Customer Email</label>
-            <input id="customerEmail" name="customerEmail" type="email" />
-          </div>
-
-          <div className={styles.row}>
-            <div className={styles.field}>
-              <label htmlFor="firstName">First Name</label>
-              <input id="firstName" name="firstName" type="text" />
-            </div>
-            <div className={styles.field}>
-              <label htmlFor="lastName">Last Name</label>
-              <input id="lastName" name="lastName" type="text" />
-            </div>
+            <input id="customerEmail" name="customerEmail" type="email" value="" readOnly />
           </div>
 
           <div className={styles.field}>
