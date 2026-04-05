@@ -1,4 +1,5 @@
 import { MegaphoneIcon, ShoppingCartIcon, Users } from "lucide-react";
+import { ROUTE_CAMPAIGNS, ROUTE_CUSTOMERS, ROUTE_ORDERS } from "../../stores/route.store";
 
 export const Cards = [
   {
@@ -7,7 +8,7 @@ export const Cards = [
     description: "Simulate a new order to test cashback processing.",
     action: {
       title: "Create order",
-      path: "create-order",
+      path: ROUTE_ORDERS,
     },
   },
   {
@@ -16,7 +17,7 @@ export const Cards = [
     description: "Create, view, and manage all your cashback campaigns.",
     action: {
       title: "Configure campaigns",
-      path: "configure-campaigns",
+      path: ROUTE_CAMPAIGNS,
     },
   },
   {
@@ -25,7 +26,7 @@ export const Cards = [
     description: "View customer data, cashback balances, and transaction history.",
     action: {
       title: "View customers",
-      path: "view-customers",
+      path: ROUTE_CUSTOMERS,
     },
   },
 ];

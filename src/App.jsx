@@ -1,10 +1,12 @@
 import { Breadcrumbs } from "./components/Breadcrumbs";
 import { Campaigns } from "./components/Campaigns";
+import { CreateCampaign } from "./components/CreateCampaign";
 import { CreateOrder } from "./components/CreateOrder";
 import { Header } from "./components/Header";
 import { Home } from "./components/Home";
 import {
   ROUTE_CAMPAIGNS,
+  ROUTE_CREATE_CAMPAIGN,
   ROUTE_CUSTOMERS,
   ROUTE_HOME,
   ROUTE_ORDERS,
@@ -24,6 +26,7 @@ function App() {
           {route !== ROUTE_HOME ? <Breadcrumbs /> : null}
           {route === ROUTE_ORDERS ? <CreateOrder /> : null}
           {route === ROUTE_CAMPAIGNS ? <Campaigns /> : null}
+          {route === ROUTE_CREATE_CAMPAIGN ? <CreateCampaign /> : null}
           {route === ROUTE_CUSTOMERS ? <>customers</> : null}
         </div>
       </main>

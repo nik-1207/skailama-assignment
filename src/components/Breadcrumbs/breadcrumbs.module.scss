@@ -2,9 +2,16 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
   padding: 12px 24px;
   background: var(--color-white);
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.crumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .homeButton {
@@ -21,6 +28,24 @@
 }
 
 .homeButton:hover {
+  color: var(--color-text-strong);
+  background: var(--color-hover-surface);
+}
+
+.crumbButton {
+  padding: 4px 6px;
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.crumbButton:hover {
   color: var(--color-text-strong);
   background: var(--color-hover-surface);
 }
