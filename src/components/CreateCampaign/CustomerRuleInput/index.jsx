@@ -10,6 +10,7 @@ export const CustomerRuleInput = ({
   operatorOptions,
   operatorValue,
   placeholder,
+  prefix,
   value,
 }) => {
   return (
@@ -30,13 +31,16 @@ export const CustomerRuleInput = ({
           ))}
         </select>
 
-        <input
-          className={styles.control}
-          onChange={onValueChange}
-          placeholder={placeholder}
-          type={inputType}
-          value={value}
-        />
+        <div className={styles.valueControl}>
+          {prefix ? <span className={styles.prefix}>{prefix}</span> : null}
+          <input
+            className={styles.valueInput}
+            onChange={onValueChange}
+            placeholder={placeholder}
+            type={inputType}
+            value={value}
+          />
+        </div>
       </div>
     </section>
   );

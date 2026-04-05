@@ -28,6 +28,7 @@ export const RuleInputRenderer = ({ onDelete, onOperatorChange, onValueChange, r
           operatorOptions={rule.operatorOptions}
           operatorValue={rule.operator}
           placeholder={rule.placeholder}
+          prefix="$"
           value={rule.value}
         />
       );

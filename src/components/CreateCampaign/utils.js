@@ -11,8 +11,8 @@ export const CAMPAIGN_RULE_GROUPS = [
         description: "Customer must contain these tags",
       },
       {
-        key: "customer-lifetime-spent",
-        label: "Customer Spent",
+        key: "customer-spent",
+        label: "Customer Lifetime Spent",
         description: "Total amount of orders customers has processed",
       },
     ],

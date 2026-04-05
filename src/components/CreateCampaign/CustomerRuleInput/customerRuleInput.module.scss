@@ -52,10 +52,47 @@
   font-size: 1rem;
 }
 
+.valueControl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 52px;
+  box-sizing: border-box;
+  padding: 0 16px;
+  border: 1px solid rgba(226, 232, 240, 1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 1);
+}
+
+.prefix {
+  font-size: 1rem;
+  color: rgba(100, 116, 139, 1);
+}
+
+.valueInput {
+  flex: 1;
+  min-height: 50px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: rgba(15, 23, 42, 1);
+  font-size: 1rem;
+}
+
 .control:focus {
   outline: none;
   border-color: rgba(59, 130, 246, 0.7);
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+}
+
+.valueControl:focus-within {
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+}
+
+.valueInput:focus {
+  outline: none;
 }
 
 @media (max-width: 720px) {

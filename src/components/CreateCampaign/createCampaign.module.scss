@@ -345,10 +345,24 @@
   }
 
   .sectionHeader,
-  .ruleHeader,
-  .tierHeader {
+  .ruleHeader {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .tierHeader {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .tierToggle {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .tierActions {
+    flex-shrink: 0;
   }
 
   .ruleHeaderLeft {
