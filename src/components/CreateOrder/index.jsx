@@ -19,9 +19,6 @@ export const CreateOrder = () => {
   const [values, setValues] = useState({
     storeId: activeShop?.id ?? "",
     customerId: "",
-    firstName: "",
-    lastName: "",
-    customerEmail: "",
     orderId: "",
     orderAmount: "",
     orderCreatedAt: "",
@@ -44,14 +41,9 @@ export const CreateOrder = () => {
 
     setValues((current) => {
       if (name === "customerId") {
-        const selectedCustomer = customers.find((customer) => customer.id === value);
-
         return {
           ...current,
           customerId: value,
-          firstName: selectedCustomer?.firstName ?? "",
-          lastName: selectedCustomer?.lastName ?? "",
-          customerEmail: selectedCustomer?.email ?? "",
         };
       }
 
@@ -64,13 +56,6 @@ export const CreateOrder = () => {
     setErrors((current) => ({
       ...current,
       [name]: undefined,
-      ...(name === "customerId"
-        ? {
-            firstName: undefined,
-            lastName: undefined,
-            customerEmail: undefined,
-          }
-        : {}),
     }));
   };
 
@@ -106,37 +91,11 @@ export const CreateOrder = () => {
               </option>
               {customers.map((customer) => (
                 <option key={customer.id} value={customer.id}>
-                  {customer.id}
+                  {customer.firstName} {customer.lastName}
                 </option>
               ))}
             </select>
             {errors.customerId ? <p className={styles.error}>{errors.customerId}</p> : null}
-          </div>
-
-          <div className={styles.field}>
-            <label htmlFor="customerEmail">Customer Email</label>
-            <input
-              id="customerEmail"
-              name="customerEmail"
-              type="email"
-              value={values.customerEmail}
-              readOnly
-            />
-            {errors.customerEmail ? <p className={styles.error}>{errors.customerEmail}</p> : null}
-          </div>
-
-          <div className={styles.row}>
-            <div className={styles.field}>
-              <label htmlFor="firstName">First Name</label>
-              <input id="firstName" name="firstName" type="text" value={values.firstName} readOnly />
-              {errors.firstName ? <p className={styles.error}>{errors.firstName}</p> : null}
-            </div>
-
-            <div className={styles.field}>
-              <label htmlFor="lastName">Last Name</label>
-              <input id="lastName" name="lastName" type="text" value={values.lastName} readOnly />
-              {errors.lastName ? <p className={styles.error}>{errors.lastName}</p> : null}
-            </div>
           </div>
 
           <div className={styles.field}>
