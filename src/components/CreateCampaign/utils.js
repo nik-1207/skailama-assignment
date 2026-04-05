@@ -101,11 +101,11 @@ export const CAMPAIGN_RULE_DEFINITIONS = {
   "customer-tags": {
     type: "customer-rule",
     label: "Customer Tags",
-    placeholder: "Enter Tag",
-    inputType: "text",
+    placeholder: "Select tags",
+    inputType: "multiselect",
     operatorType: "equality",
     defaultOperator: "is",
-    defaultValue: "",
+    defaultValue: [],
   },
   "customer-spent": {
     type: "customer-rule",
@@ -222,8 +222,14 @@ export const buildCampaignRuleLogic = ({ field, operator, value }) => {
 
   switch (operator) {
     case "is":
+      if (Array.isArray(value)) {
+        return { in: [variable, value] };
+      }
       return { "==": [variable, value] };
     case "is-not":
+      if (Array.isArray(value)) {
+        return { "!": [{ in: [variable, value] }] };
+      }
       return { "!=": [variable, value] };
     case ">=":
       return { ">=": [variable, Number(value || 0)] };

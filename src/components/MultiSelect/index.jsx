@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./multiSelect.module.scss";
 import { ChevronDown } from "lucide-react";
 
 
-export const MultiSelect = ({ value, onChange, data }) => {
+export const MultiSelect = ({ value, onChange, data, placeholder = "Pick values" }) => {
   const rootRef = useRef(null);
   const inputRef = useRef(null);
   const [search, setSearch] = useState("");
@@ -77,7 +77,7 @@ export const MultiSelect = ({ value, onChange, data }) => {
             className={styles.input}
             onChange={(event) => setSearch(event.target.value)}
             onFocus={() => setOpened(true)}
-            placeholder={selectedOptions.length === 0 ? "Pick values" : ""}
+            placeholder={selectedOptions.length === 0 ? placeholder : ""}
             ref={inputRef}
             type="text"
             value={search}

@@ -56,3 +56,17 @@ export const seedProducts = (products) => {
     ),
   );
 };
+
+export const getCustomerTags = () => JSON.parse(localStorage.getItem("customerTags") ?? "[]");
+
+export const seedCustomerTags = (tags) => {
+  localStorage.setItem(
+    "customerTags",
+    JSON.stringify(
+      tags.map((tag) => ({
+        id: tag.id,
+        name: tag.name,
+      })),
+    ),
+  );
+};

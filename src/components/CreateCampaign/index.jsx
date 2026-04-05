@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ChevronDown, CircleHelp, Plus, Trash2 } from "lucide-react";
 import { Card } from "../Card";
+import { useCustomerTagStore } from "../../stores/customerTag.store";
 import { useShopStore } from "../../stores/shop.store";
 import { RuleInputRenderer } from "./RuleInputRenderer";
 import { RuleSelectionModal } from "./RuleSelectionModal";
@@ -10,6 +11,8 @@ import { TIMEZONE_OPTIONS } from "../utils";
 
 export const CreateCampaign = () => {
   const activeShop = useShopStore((state) => state.activeShop);
+  const customerTags = useCustomerTagStore((state) => state.customerTags);
+  const loadCustomerTags = useCustomerTagStore((state) => state.loadCustomerTags);
   const timezone = activeShop?.timezone ?? TIMEZONE_OPTIONS[0];
   const initialTierId = crypto.randomUUID();
   const [values, setValues] = useState({
@@ -37,6 +40,10 @@ export const CreateCampaign = () => {
   });
   const [openTierIds, setOpenTierIds] = useState([initialTierId]);
   const [ruleModalTierId, setRuleModalTierId] = useState(null);
+
+  useEffect(() => {
+    loadCustomerTags();
+  }, [loadCustomerTags]);
 
   useEffect(() => {
     setValues((current) => ({
@@ -180,6 +187,11 @@ export const CreateCampaign = () => {
   const closeRuleModal = () => {
     setRuleModalTierId(null);
   };
+
+  const customerTagOptions = customerTags.map((tag) => ({
+    value: tag.id,
+    label: tag.name,
+  }));
 
   const addRuleToTier = (field) => {
     if (!ruleModalTierId) {
@@ -447,8 +459,16 @@ export const CreateCampaign = () => {
                             key={rule.id}
                             onDelete={() => deleteRule(tier.id, rule.id)}
                             onOperatorChange={(event) => updateRule(tier.id, rule.id, "operator", event.target.value)}
-                            onValueChange={(event) => updateRule(tier.id, rule.id, "value", event.target.value)}
+                            onValueChange={(nextValue) =>
+                              updateRule(
+                                tier.id,
+                                rule.id,
+                                "value",
+                                Array.isArray(nextValue) ? nextValue : nextValue.target.value,
+                              )
+                            }
                             rule={rule}
+                            tagOptions={customerTagOptions}
                           />
                         ))}
                       </div>
