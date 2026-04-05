@@ -1,0 +1,93 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-height: min(680px, calc(100vh - 180px));
+  margin: 0 -8px 0 0;
+  padding-right: 8px;
+  overflow-y: auto;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.groupHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.groupIcon {
+  flex-shrink: 0;
+  color: rgba(124, 58, 237, 1);
+}
+
+.groupTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: rgba(2, 6, 23, 1);
+}
+
+.ruleList {
+  display: flex;
+  flex-direction: column;
+}
+
+.ruleButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 14px 4px 14px 0;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ruleButton + .ruleButton {
+  border-top: 1px solid rgba(241, 245, 249, 1);
+}
+
+.ruleText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ruleLabel {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(2, 6, 23, 1);
+}
+
+.ruleDescription {
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: rgba(100, 116, 139, 1);
+}
+
+.ruleChevron {
+  flex-shrink: 0;
+  color: rgba(100, 116, 139, 1);
+}
+
+@media (max-width: 640px) {
+  .content {
+    gap: 24px;
+  }
+
+  .groupTitle {
+    font-size: 1.1rem;
+  }
+
+  .ruleButton {
+    padding-right: 0;
+  }
+}

@@ -242,6 +242,34 @@
   gap: 16px;
 }
 
+.ruleList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ruleItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border: 1px solid rgba(226, 232, 240, 1);
+  border-radius: 12px;
+  background: rgba(248, 250, 252, 1);
+}
+
+.ruleName {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-strong);
+}
+
+.ruleMeta {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+}
+
 .valueField {
   display: flex;
   align-items: center;
