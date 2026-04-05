@@ -1,21 +1,32 @@
 import { z } from "zod/v4";
 
-const ruleOperatorSchema = z.enum(["=", "<=", ">=", "is", "is-not"]);
 const ruleTypeSchema = z.enum(["product-rule", "cart-rule", "customer-rule"]);
-const ruleValueSchema = z.union([z.string(), z.number(), z.array(z.union([z.string(), z.number()]))]);
+const tierMatchTypeSchema = z.enum(["and", "or"]);
+
+const jsonLogicPrimitiveSchema = z.union([z.string(), z.number(), z.boolean(), z.null()]);
+
+const jsonLogicSchema = z.lazy(() =>
+  z.union([
+    jsonLogicPrimitiveSchema,
+    z.array(jsonLogicSchema),
+    z.record(z.string(), jsonLogicSchema),
+  ]),
+);
 
 const campaignRuleSchema = z.object({
   id: z.uuid("Rule ID is required"),
   type: ruleTypeSchema,
   field: z.string().trim().min(1, "Rule field is required"),
-  operator: ruleOperatorSchema,
-  value: ruleValueSchema,
+  logic: z
+    .record(z.string(), jsonLogicSchema)
+    .refine((value) => Object.keys(value).length > 0, "Rule logic is required"),
 });
 
 const campaignTierSchema = z.object({
   id: z.uuid("Tier ID is required"),
   name: z.string().trim().min(1, "Tier name is required"),
   cashbackValue: z.string().trim().min(1, "Cashback value is required"),
+  matchType: tierMatchTypeSchema,
   rules: z.array(campaignRuleSchema),
 });
 
@@ -120,3 +131,5 @@ export const createCampaignSchema = z
       }
     }
   });
+
+export { campaignRuleSchema, campaignTierSchema, jsonLogicSchema, tierMatchTypeSchema };
