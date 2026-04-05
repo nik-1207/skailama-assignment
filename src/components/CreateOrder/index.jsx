@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { Card } from "../Card";
 import { CalendarField } from "../CalendarField";
+import { MultiSelect } from "../MultiSelect";
 import { useShopStore } from "../../stores/shop.store";
 import { useCustomerStore } from "../../stores/customer.store";
+import { useProductStore } from "../../stores/product.store";
 import { createOrderSchema } from "./schema";
 import { zodResolver } from "./zodResolver";
 import styles from "./createOrder.module.scss";
 import { ROUTE_HOME, useRouteStore } from "../../stores/route.store";
+import { CURRENCY_OPTIONS } from "../utils";
 
 const resolveCreateOrder = zodResolver(createOrderSchema);
 
@@ -14,20 +17,24 @@ export const CreateOrder = () => {
   const activeShop = useShopStore((state) => state.activeShop);
   const customers = useCustomerStore((state) => state.customers);
   const loadCustomers = useCustomerStore((state) => state.loadCustomers);
+  const products = useProductStore((state) => state.products);
+  const loadProducts = useProductStore((state) => state.loadProducts);
   const setRoute = useRouteStore((state) => state.setRoute);
 
   const [values, setValues] = useState({
     storeId: activeShop?.id ?? "",
     customerId: "",
-    orderId: "",
     orderAmount: "",
     orderCreatedAt: "",
+    orderCurrency: "",
+    lines: [],
   });
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     loadCustomers();
-  }, [loadCustomers]);
+    loadProducts();
+  }, [loadCustomers, loadProducts]);
 
   useEffect(() => {
     setValues((current) => ({
@@ -65,6 +72,20 @@ export const CreateOrder = () => {
     setErrors(result.errors);
   };
 
+  const addLine = () => {
+    setValues((current) => ({
+      ...current,
+      lines: [...current.lines, { id: crypto.randomUUID(), productId: "", variantIds: [], quantity: "" }],
+    }));
+  };
+
+  const updateLine = ({ lineId, key, value }) => {
+    setValues((current) => ({
+      ...current,
+      lines: current.lines.map((line) => (line.id === lineId ? { ...line, [key]: value } : line)),
+    }));
+  };
+
   return (
     <div className={styles.container}>
       <Card className={styles.card}>
@@ -98,10 +119,54 @@ export const CreateOrder = () => {
             {errors.customerId ? <p className={styles.error}>{errors.customerId}</p> : null}
           </div>
 
-          <div className={styles.field}>
-            <label htmlFor="orderId">Order ID</label>
-            <input id="orderId" name="orderId" type="text" value={values.orderId} onChange={onChange} />
-            {errors.orderId ? <p className={styles.error}>{errors.orderId}</p> : null}
+          <div className={styles.productHeader}>
+            <label className={styles.productLabel}>Products</label>
+            <button className={styles.addProductButton} onClick={addLine} type="button">
+              Add product
+            </button>
+          </div>
+
+          <div className={styles.lines}>
+            {values.lines.map((line, index) => {
+              const selectedProduct = products.find((product) => product.id === line.productId);
+              const variantOptions = (selectedProduct?.variants ?? []).map((variant) => ({
+                value: variant.id,
+                label: variant.name,
+              }));
+
+              return (
+                <div className={styles.lineRow} key={line.id}>
+                  <span className={styles.lineIndex}>{index + 1}.</span>
+                  <select
+                    className={styles.productName}
+                    onChange={(event) => updateLine({ lineId: line.id, key: "productId", value: event.target.value })}
+                    value={line.productId}
+                  >
+                    <option value="" disabled>
+                      Select product                    </option>
+                    {products.map((product) => (
+                      <option key={product.id} value={product.id}>
+                        {product.name}
+                      </option>
+                    ))}
+                  </select>
+                  <MultiSelect
+                    data={variantOptions}
+                    onChange={(next) => updateLine({ lineId: line.id, key: "variantIds", value: next })}
+                    value={line.variantIds}
+                  />
+                  <input
+                    className={styles.quantityInput}
+                    onChange={(event) => updateLine({
+                      lineId: line.id, key: "quantity", value: event.target.value
+                    })}
+                    placeholder="Quantity"
+                    type="number"
+                    value={line.quantity}
+                  />
+                </div>
+              );
+            })}
           </div>
 
           <div className={styles.field}>
@@ -114,6 +179,20 @@ export const CreateOrder = () => {
               onChange={onChange}
             />
             {errors.orderAmount ? <p className={styles.error}>{errors.orderAmount}</p> : null}
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="orderCurrency">Order Currency</label>
+            <select id="orderCurrency" name="orderCurrency" value={values.orderCurrency} onChange={onChange}>
+              <option value="" disabled>
+                Select currency
+              </option>
+              {CURRENCY_OPTIONS.map((currency) => (
+                <option key={currency} value={currency}>
+                  {currency}
+                </option>
+              ))}
+            </select>
           </div>
 
           <CalendarField

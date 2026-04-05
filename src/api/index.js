@@ -38,3 +38,21 @@ export const seedUsers = (users) => {
     ),
   );
 };
+
+export const getProducts = () => JSON.parse(localStorage.getItem("products") ?? "[]");
+
+export const seedProducts = (products) => {
+  localStorage.setItem(
+    "products",
+    JSON.stringify(
+      products.map((product) => ({
+        id: product.id,
+        name: product.name,
+        variants: product.variants.map((variant) => ({
+          id: variant.id,
+          name: variant.name,
+        })),
+      })),
+    ),
+  );
+};

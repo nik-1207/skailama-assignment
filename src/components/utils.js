@@ -5,4 +5,6 @@ export const TIMEZONE_OPTIONS = [
     "Europe/London",
     "Australia/Sydney",
   ];
+
+export const CURRENCY_OPTIONS = ["USD", "INR", "EUR", "GBP"];
   

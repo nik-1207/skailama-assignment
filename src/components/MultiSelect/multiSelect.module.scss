@@ -1,0 +1,114 @@
+.root {
+  position: relative;
+}
+
+.control {
+  padding: 10px 14px;
+  border: 1px solid rgba(203, 213, 225, 1);
+  border-radius: 12px;
+  background: rgba(248, 250, 252, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: text;
+}
+
+.control:focus-within {
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+  background: var(--color-white);
+}
+
+.values {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.pill {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: rgba(241, 245, 249, 1);
+  color: var(--color-text-strong);
+  font-size: 0.875rem;
+  line-height: 1;
+  border: 1px solid rgba(226, 232, 240, 1);
+}
+
+.pillRemove {
+  border: none;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.input {
+  min-width: 80px;
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--color-text-strong);
+  font-size: 1rem;
+  padding: 2px 0;
+}
+
+.input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.chevron {
+  flex: 0 0 auto;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding: 6px;
+  border: 1px solid rgba(226, 232, 240, 1);
+  border-radius: 12px;
+  background: var(--color-white);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.option {
+  text-align: left;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-text-strong);
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.option:hover {
+  background: rgba(241, 245, 249, 1);
+}
+
+.empty {
+  padding: 10px 12px;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
