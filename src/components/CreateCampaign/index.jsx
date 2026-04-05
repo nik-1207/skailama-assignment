@@ -6,9 +6,10 @@ import { TIMEZONE_OPTIONS } from "../utils";
 export const CreateCampaign = () => {
   const activeShop = useShopStore((state) => state.activeShop);
   const isScheduled = true;
+  const timezone = activeShop?.timezone ?? TIMEZONE_OPTIONS[0];
 
   return (
-    <div className={styles.container}>
+    <form className={styles.container}>
       <Card className={styles.card}>
         <h1 className={styles.title}>Core Details</h1>
         <div className={styles.form}>
@@ -26,10 +27,10 @@ export const CreateCampaign = () => {
           </div>
           <div className={styles.field}>
             <label htmlFor="timezone">Campaign Timezone</label>
-            <select id="timezone" name="timezone" defaultValue={activeShop?.timezone ?? TIMEZONE_OPTIONS[0]}>
-              {Array.from(new Set([activeShop?.timezone, ...TIMEZONE_OPTIONS].filter(Boolean))).map((timezone) => (
-                <option key={timezone} value={timezone}>
-                  {timezone}
+            <select id="timezone" name="timezone" defaultValue={timezone}>
+              {Array.from(new Set([timezone, ...TIMEZONE_OPTIONS].filter(Boolean))).map((option) => (
+                <option key={option} value={option}>
+                  {option}
                 </option>
               ))}
             </select>
@@ -38,7 +39,7 @@ export const CreateCampaign = () => {
       </Card>
 
       <Card className={styles.card}>
-        <h1 className={styles.title}>Timing &amp; Schedule ({activeShop?.timezone ?? "UTC"})</h1>
+        <h1 className={styles.title}>Timing &amp; Schedule ({timezone})</h1>
 
         <div className={styles.scheduleSection}>
           <span className={styles.label}>Campaign Schedule</span>
@@ -68,6 +69,6 @@ export const CreateCampaign = () => {
           ) : null}
         </div>
       </Card>
-    </div>
+    </form>
   );
 };

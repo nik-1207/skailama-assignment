@@ -25,8 +25,6 @@ export const getRouteBreadcrumbs = (route) => {
 
   return segments.map((_, index) => {
     const path = segments.slice(0, index + 1).join("/");
-    console.log(path
-    )
 
     return {
       path,
