@@ -152,6 +152,11 @@
   cursor: pointer;
 }
 
+.tierButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .tiers {
   display: flex;
   flex-direction: column;
@@ -216,7 +221,7 @@
   gap: 16px;
 }
 
-.currencyField {
+.valueField {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -228,12 +233,12 @@
   background: rgba(248, 250, 252, 1);
 }
 
-.currencySymbol {
+.valueAffix {
   font-size: 1rem;
   color: rgba(100, 116, 139, 1);
 }
 
-.currencyField input {
+.valueField input {
   flex: 1;
   min-height: 50px;
   padding: 0;
@@ -242,12 +247,12 @@
   box-shadow: none;
 }
 
-.currencyField:focus-within {
+.valueField:focus-within {
   border-color: rgba(59, 130, 246, 0.7);
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
 }
 
-.currencyField input:focus {
+.valueField input:focus {
   outline: none;
   box-shadow: none;
 }

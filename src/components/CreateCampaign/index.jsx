@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ChevronDown, CircleHelp, Plus, Settings, Trash2 } from "lucide-react";
+import { ChevronDown, CircleHelp, Plus, Trash2 } from "lucide-react";
 import { Card } from "../Card";
 import { useShopStore } from "../../stores/shop.store";
 import styles from "./createCampaign.module.scss";
@@ -82,8 +82,14 @@ export const CreateCampaign = () => {
   const isScheduled = values.campaignSchedule === "scheduled";
   const hasDeliveryDays = values.deliveryMode === "after-specified-days";
   const hasExpiryDays = values.expirationMode === "after-specified-days";
+  const hasMaxTiers = values.tiers.length >= 5;
+  const cashbackUnit = values.campaignType === "percentage" ? "%" : "$";
 
   const addTier = () => {
+    if (hasMaxTiers) {
+      return;
+    }
+
     setValues((current) => ({
       ...current,
       tiers: [
@@ -101,6 +107,13 @@ export const CreateCampaign = () => {
     setValues((current) => ({
       ...current,
       tiers: current.tiers.map((tier) => (tier.id === tierId ? { ...tier, [key]: value } : tier)),
+    }));
+  };
+
+  const deleteTier = (tierId) => {
+    setValues((current) => ({
+      ...current,
+      tiers: current.tiers.filter((tier) => tier.id !== tierId),
     }));
   };
 
@@ -271,7 +284,7 @@ export const CreateCampaign = () => {
             <h1 className={styles.sectionTitle}>Campaign Eligibility Rules</h1>
             <CircleHelp className={styles.sectionIcon} size={18} />
           </div>
-          <button className={styles.tierButton} onClick={addTier} type="button">
+          <button className={styles.tierButton} disabled={hasMaxTiers} onClick={addTier} type="button">
             <Plus size={18} />
             <span>Add tiers</span>
           </button>
@@ -287,10 +300,7 @@ export const CreateCampaign = () => {
                 </div>
 
                 <div className={styles.tierActions}>
-                  <button className={styles.iconButton} type="button">
-                    <Settings size={18} />
-                  </button>
-                  <button className={styles.iconButton} type="button">
+                  <button className={styles.iconButton} onClick={() => deleteTier(tier.id)} type="button">
                     <Trash2 size={18} />
                   </button>
                 </div>
@@ -307,8 +317,10 @@ export const CreateCampaign = () => {
 
                 <div className={styles.field}>
                   <label htmlFor={`cashbackValue-${tier.id}`}>Cashback value</label>
-                  <div className={styles.currencyField}>
-                    <span className={styles.currencySymbol}>$</span>
+                  <div className={styles.valueField}>
+                    {values.campaignType === "number" ? (
+                      <span className={styles.valueAffix}>{cashbackUnit}</span>
+                    ) : null}
                     <input
                       id={`cashbackValue-${tier.id}`}
                       name={`cashbackValue-${tier.id}`}
@@ -316,6 +328,9 @@ export const CreateCampaign = () => {
                       type="text"
                       value={tier.cashbackValue}
                     />
+                    {values.campaignType === "percentage" ? (
+                      <span className={styles.valueAffix}>{cashbackUnit}</span>
+                    ) : null}
                   </div>
                 </div>
               </div>

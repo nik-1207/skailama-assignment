@@ -1,5 +1,11 @@
 import { z } from "zod/v4";
 
+const campaignTierSchema = z.object({
+  id: z.uuid("Tier ID is required"),
+  name: z.string().trim().min(1, "Tier name is required"),
+  cashbackValue: z.string().trim().min(1, "Cashback value is required"),
+});
+
 export const createCampaignSchema = z
   .object({
     storeId: z.uuid("Store ID is required"),
@@ -14,6 +20,7 @@ export const createCampaignSchema = z
     expirationMode: z.enum(["never", "after-specified-days"]),
     expirationDays: z.string().nullable(),
     expiryTime: z.string().nullable(),
+    tiers: z.array(campaignTierSchema).min(1, "At least one tier is required").max(5, "Maximum 5 tiers are allowed"),
   })
   .superRefine((values, context) => {
     if (values.campaignSchedule === "scheduled") {
