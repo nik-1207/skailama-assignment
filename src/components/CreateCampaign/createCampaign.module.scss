@@ -189,6 +189,27 @@
   color: rgba(2, 6, 23, 1);
 }
 
+.tierToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.chevronOpen,
+.chevronClosed {
+  transition: transform 0.2s ease;
+}
+
+.chevronClosed {
+  transform: rotate(-90deg);
+}
+
 .tierActions {
   display: flex;
   align-items: center;

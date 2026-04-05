@@ -8,6 +8,7 @@ import { TIMEZONE_OPTIONS } from "../utils";
 export const CreateCampaign = () => {
   const activeShop = useShopStore((state) => state.activeShop);
   const timezone = activeShop?.timezone ?? TIMEZONE_OPTIONS[0];
+  const initialTierId = crypto.randomUUID();
   const [values, setValues] = useState({
     storeId: activeShop?.id ?? "",
     campaignName: "",
@@ -23,12 +24,13 @@ export const CreateCampaign = () => {
     expiryTime: null,
     tiers: [
       {
-        id: crypto.randomUUID(),
+        id: initialTierId,
         name: "Tier 1",
         cashbackValue: "100",
       },
     ],
   });
+  const [openTierIds, setOpenTierIds] = useState([initialTierId]);
 
   useEffect(() => {
     setValues((current) => ({
@@ -90,17 +92,21 @@ export const CreateCampaign = () => {
       return;
     }
 
+    const nextTierId = crypto.randomUUID();
+
     setValues((current) => ({
       ...current,
       tiers: [
         ...current.tiers,
         {
-          id: crypto.randomUUID(),
+          id: nextTierId,
           name: `Tier ${current.tiers.length + 1}`,
           cashbackValue: "",
         },
       ],
     }));
+
+    setOpenTierIds((current) => [...current, nextTierId]);
   };
 
   const updateTier = (tierId, key, value) => {
@@ -115,6 +121,13 @@ export const CreateCampaign = () => {
       ...current,
       tiers: current.tiers.filter((tier) => tier.id !== tierId),
     }));
+    setOpenTierIds((current) => current.filter((id) => id !== tierId));
+  };
+
+  const toggleTier = (tierId) => {
+    setOpenTierIds((current) =>
+      current.includes(tierId) ? current.filter((id) => id !== tierId) : [...current, tierId],
+    );
   };
 
   return (
@@ -294,10 +307,13 @@ export const CreateCampaign = () => {
           {values.tiers.map((tier) => (
             <section className={styles.tierCard} key={tier.id}>
               <div className={styles.tierHeader}>
-                <div className={styles.tierHeading}>
-                  <ChevronDown size={18} />
+                <button className={styles.tierToggle} onClick={() => toggleTier(tier.id)} type="button">
+                  <ChevronDown
+                    className={openTierIds.includes(tier.id) ? styles.chevronOpen : styles.chevronClosed}
+                    size={18}
+                  />
                   <span>{tier.name}</span>
-                </div>
+                </button>
 
                 <div className={styles.tierActions}>
                   <button className={styles.iconButton} onClick={() => deleteTier(tier.id)} type="button">
@@ -306,34 +322,36 @@ export const CreateCampaign = () => {
                 </div>
               </div>
 
-              <div className={styles.tierBody}>
-                <div className={styles.ruleHeader}>
-                  <span className={styles.label}>Eligibility rules</span>
-                  <button className={styles.ruleButton} type="button">
-                    <Plus size={18} />
-                    <span>Add rule</span>
-                  </button>
-                </div>
+              {openTierIds.includes(tier.id) ? (
+                <div className={styles.tierBody}>
+                  <div className={styles.ruleHeader}>
+                    <span className={styles.label}>Eligibility rules</span>
+                    <button className={styles.ruleButton} type="button">
+                      <Plus size={18} />
+                      <span>Add rule</span>
+                    </button>
+                  </div>
 
-                <div className={styles.field}>
-                  <label htmlFor={`cashbackValue-${tier.id}`}>Cashback value</label>
-                  <div className={styles.valueField}>
-                    {values.campaignType === "number" ? (
-                      <span className={styles.valueAffix}>{cashbackUnit}</span>
-                    ) : null}
-                    <input
-                      id={`cashbackValue-${tier.id}`}
-                      name={`cashbackValue-${tier.id}`}
-                      onChange={(event) => updateTier(tier.id, "cashbackValue", event.target.value)}
-                      type="text"
-                      value={tier.cashbackValue}
-                    />
-                    {values.campaignType === "percentage" ? (
-                      <span className={styles.valueAffix}>{cashbackUnit}</span>
-                    ) : null}
+                  <div className={styles.field}>
+                    <label htmlFor={`cashbackValue-${tier.id}`}>Cashback value</label>
+                    <div className={styles.valueField}>
+                      {values.campaignType === "number" ? (
+                        <span className={styles.valueAffix}>{cashbackUnit}</span>
+                      ) : null}
+                      <input
+                        id={`cashbackValue-${tier.id}`}
+                        name={`cashbackValue-${tier.id}`}
+                        onChange={(event) => updateTier(tier.id, "cashbackValue", event.target.value)}
+                        type="text"
+                        value={tier.cashbackValue}
+                      />
+                      {values.campaignType === "percentage" ? (
+                        <span className={styles.valueAffix}>{cashbackUnit}</span>
+                      ) : null}
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : null}
             </section>
           ))}
         </div>
