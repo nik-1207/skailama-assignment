@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { ChevronDown, CircleHelp, Plus, Settings, Trash2 } from "lucide-react";
 import { Card } from "../Card";
 import { useShopStore } from "../../stores/shop.store";
 import styles from "./createCampaign.module.scss";
@@ -8,28 +9,70 @@ export const CreateCampaign = () => {
   const activeShop = useShopStore((state) => state.activeShop);
   const timezone = activeShop?.timezone ?? TIMEZONE_OPTIONS[0];
   const [values, setValues] = useState({
+    storeId: activeShop?.id ?? "",
     campaignName: "",
     campaignType: "percentage",
     timezone,
     campaignSchedule: "scheduled",
-    startDateTime: "",
-    endDateTime: "",
+    startDateTime: null,
+    endDateTime: null,
+    deliveryMode: "immediate",
+    deliveryDays: null,
+    expirationMode: "never",
+    expirationDays: null,
+    expiryTime: null,
+    tiers: [
+      {
+        id: crypto.randomUUID(),
+        name: "Tier 1",
+        cashbackValue: "100",
+      },
+    ],
   });
 
   useEffect(() => {
     setValues((current) => ({
       ...current,
+      storeId: activeShop?.id ?? "",
       timezone,
     }));
-  }, [timezone]);
+  }, [activeShop, timezone]);
 
   const onChange = (event) => {
     const { name, value } = event.target;
 
-    setValues((current) => ({
-      ...current,
-      [name]: value,
-    }));
+    setValues((current) => {
+      if (name === "campaignSchedule") {
+        return {
+          ...current,
+          campaignSchedule: value,
+          startDateTime: value === "scheduled" ? current.startDateTime ?? "" : null,
+          endDateTime: value === "scheduled" ? current.endDateTime ?? "" : null,
+        };
+      }
+
+      if (name === "deliveryMode") {
+        return {
+          ...current,
+          deliveryMode: value,
+          deliveryDays: value === "after-specified-days" ? current.deliveryDays ?? "7" : null,
+        };
+      }
+
+      if (name === "expirationMode") {
+        return {
+          ...current,
+          expirationMode: value,
+          expirationDays: value === "after-specified-days" ? current.expirationDays ?? "90" : null,
+          expiryTime: value === "after-specified-days" ? current.expiryTime ?? "10:00" : null,
+        };
+      }
+
+      return {
+        ...current,
+        [name]: value,
+      };
+    });
   };
 
   const onSubmit = (event) => {
@@ -37,6 +80,29 @@ export const CreateCampaign = () => {
   };
 
   const isScheduled = values.campaignSchedule === "scheduled";
+  const hasDeliveryDays = values.deliveryMode === "after-specified-days";
+  const hasExpiryDays = values.expirationMode === "after-specified-days";
+
+  const addTier = () => {
+    setValues((current) => ({
+      ...current,
+      tiers: [
+        ...current.tiers,
+        {
+          id: crypto.randomUUID(),
+          name: `Tier ${current.tiers.length + 1}`,
+          cashbackValue: "",
+        },
+      ],
+    }));
+  };
+
+  const updateTier = (tierId, key, value) => {
+    setValues((current) => ({
+      ...current,
+      tiers: current.tiers.map((tier) => (tier.id === tierId ? { ...tier, [key]: value } : tier)),
+    }));
+  };
 
   return (
     <form className={styles.container} onSubmit={onSubmit}>
@@ -75,7 +141,7 @@ export const CreateCampaign = () => {
       </Card>
 
       <Card className={styles.card}>
-        <h1 className={styles.title}>Timing &amp; Schedule ({timezone})</h1>
+        <h1 className={styles.title}>Timing &amp; Schedule ({values.timezone})</h1>
 
         <div className={styles.scheduleSection}>
           <span className={styles.label}>Campaign Schedule</span>
@@ -110,7 +176,7 @@ export const CreateCampaign = () => {
                   id="startDateTime"
                   name="startDateTime"
                   type="datetime-local"
-                  value={values.startDateTime}
+                  value={values.startDateTime ?? ""}
                   onChange={onChange}
                 />
               </div>
@@ -121,12 +187,140 @@ export const CreateCampaign = () => {
                   id="endDateTime"
                   name="endDateTime"
                   type="datetime-local"
-                  value={values.endDateTime}
+                  value={values.endDateTime ?? ""}
                   onChange={onChange}
                 />
               </div>
             </div>
           ) : null}
+        </div>
+      </Card>
+
+      <Card className={styles.card}>
+        <h1 className={styles.title}>Cashback Details and Expiry</h1>
+
+        <div className={styles.expirySection}>
+          <div className={styles.form}>
+            <div className={styles.field}>
+              <label htmlFor="deliveryMode">Delivery Mode</label>
+              <select id="deliveryMode" name="deliveryMode" value={values.deliveryMode} onChange={onChange}>
+                <option value="immediate">Immediate</option>
+                <option value="after-specified-days">After Specified Days</option>
+              </select>
+            </div>
+
+            {hasDeliveryDays ? (
+              <div className={styles.field}>
+                <label htmlFor="deliveryDays">Delivery Days</label>
+                <input
+                  id="deliveryDays"
+                  name="deliveryDays"
+                  type="number"
+                  value={values.deliveryDays ?? ""}
+                  onChange={onChange}
+                />
+              </div>
+            ) : null}
+          </div>
+        </div>
+
+        <div className={styles.divider} />
+
+        <div className={styles.expirySection}>
+          <div className={styles.form}>
+            <div className={styles.field}>
+              <label htmlFor="expirationMode">Expiration Mode</label>
+              <select id="expirationMode" name="expirationMode" value={values.expirationMode} onChange={onChange}>
+                <option value="never">Never</option>
+                <option value="after-specified-days">After Specified Days</option>
+              </select>
+            </div>
+
+            {hasExpiryDays ? (
+              <div className={styles.field}>
+                <label htmlFor="expirationDays">Expiration Days</label>
+                <input
+                  id="expirationDays"
+                  name="expirationDays"
+                  type="number"
+                  value={values.expirationDays ?? ""}
+                  onChange={onChange}
+                />
+              </div>
+            ) : null}
+
+            {hasExpiryDays ? (
+              <div className={styles.field}>
+                <label htmlFor="expiryTime">Expiry Time ({values.timezone})</label>
+                <input
+                  id="expiryTime"
+                  name="expiryTime"
+                  type="time"
+                  value={values.expiryTime ?? ""}
+                  onChange={onChange}
+                />
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </Card>
+
+      <Card className={styles.card}>
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionTitleWrap}>
+            <h1 className={styles.sectionTitle}>Campaign Eligibility Rules</h1>
+            <CircleHelp className={styles.sectionIcon} size={18} />
+          </div>
+          <button className={styles.tierButton} onClick={addTier} type="button">
+            <Plus size={18} />
+            <span>Add tiers</span>
+          </button>
+        </div>
+
+        <div className={styles.tiers}>
+          {values.tiers.map((tier) => (
+            <section className={styles.tierCard} key={tier.id}>
+              <div className={styles.tierHeader}>
+                <div className={styles.tierHeading}>
+                  <ChevronDown size={18} />
+                  <span>{tier.name}</span>
+                </div>
+
+                <div className={styles.tierActions}>
+                  <button className={styles.iconButton} type="button">
+                    <Settings size={18} />
+                  </button>
+                  <button className={styles.iconButton} type="button">
+                    <Trash2 size={18} />
+                  </button>
+                </div>
+              </div>
+
+              <div className={styles.tierBody}>
+                <div className={styles.ruleHeader}>
+                  <span className={styles.label}>Eligibility rules</span>
+                  <button className={styles.ruleButton} type="button">
+                    <Plus size={18} />
+                    <span>Add rule</span>
+                  </button>
+                </div>
+
+                <div className={styles.field}>
+                  <label htmlFor={`cashbackValue-${tier.id}`}>Cashback value</label>
+                  <div className={styles.currencyField}>
+                    <span className={styles.currencySymbol}>$</span>
+                    <input
+                      id={`cashbackValue-${tier.id}`}
+                      name={`cashbackValue-${tier.id}`}
+                      onChange={(event) => updateTier(tier.id, "cashbackValue", event.target.value)}
+                      type="text"
+                      value={tier.cashbackValue}
+                    />
+                  </div>
+                </div>
+              </div>
+            </section>
+          ))}
         </div>
       </Card>
     </form>

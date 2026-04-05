@@ -1,0 +1,102 @@
+import { z } from "zod/v4";
+
+export const createCampaignSchema = z
+  .object({
+    storeId: z.uuid("Store ID is required"),
+    campaignName: z.string().trim().min(1, "Campaign name is required"),
+    campaignType: z.enum(["percentage", "number"]),
+    timezone: z.string().trim().min(1, "Campaign timezone is required"),
+    campaignSchedule: z.enum(["continuous", "scheduled"]),
+    startDateTime: z.string().nullable(),
+    endDateTime: z.string().nullable(),
+    deliveryMode: z.enum(["immediate", "after-specified-days"]),
+    deliveryDays: z.string().nullable(),
+    expirationMode: z.enum(["never", "after-specified-days"]),
+    expirationDays: z.string().nullable(),
+    expiryTime: z.string().nullable(),
+  })
+  .superRefine((values, context) => {
+    if (values.campaignSchedule === "scheduled") {
+      if (!values.startDateTime?.trim()) {
+        context.addIssue({
+          code: "custom",
+          path: ["startDateTime"],
+          message: "Start date and time is required",
+        });
+      }
+
+      if (!values.endDateTime?.trim()) {
+        context.addIssue({
+          code: "custom",
+          path: ["endDateTime"],
+          message: "End date and time is required",
+        });
+      }
+    } else {
+      if (values.startDateTime !== null) {
+        context.addIssue({
+          code: "custom",
+          path: ["startDateTime"],
+          message: "Start date and time must be null for continuous campaigns",
+        });
+      }
+
+      if (values.endDateTime !== null) {
+        context.addIssue({
+          code: "custom",
+          path: ["endDateTime"],
+          message: "End date and time must be null for continuous campaigns",
+        });
+      }
+    }
+
+    if (values.deliveryMode === "after-specified-days") {
+      if (!values.deliveryDays?.trim()) {
+        context.addIssue({
+          code: "custom",
+          path: ["deliveryDays"],
+          message: "Delivery days is required",
+        });
+      }
+    } else if (values.deliveryDays !== null) {
+      context.addIssue({
+        code: "custom",
+        path: ["deliveryDays"],
+        message: "Delivery days must be null for immediate delivery",
+      });
+    }
+
+    if (values.expirationMode === "after-specified-days") {
+      if (!values.expirationDays?.trim()) {
+        context.addIssue({
+          code: "custom",
+          path: ["expirationDays"],
+          message: "Expiration days is required",
+        });
+      }
+
+      if (!values.expiryTime?.trim()) {
+        context.addIssue({
+          code: "custom",
+          path: ["expiryTime"],
+          message: "Expiry time is required",
+        });
+      }
+    } else {
+      if (values.expirationDays !== null) {
+        context.addIssue({
+          code: "custom",
+          path: ["expirationDays"],
+          message: "Expiration days must be null when expiration mode is never",
+        });
+      }
+
+      if (values.expiryTime !== null) {
+        context.addIssue({
+          code: "custom",
+          path: ["expiryTime"],
+          message: "Expiry time must be null when expiration mode is never",
+        });
+      }
+    }
+  });

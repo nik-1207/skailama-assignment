@@ -20,6 +20,32 @@
   color: rgba(2, 6, 23, 1);
 }
 
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(226, 232, 240, 1);
+}
+
+.sectionTitleWrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: rgba(2, 6, 23, 1);
+}
+
+.sectionIcon {
+  color: var(--color-text-muted);
+}
+
 .form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -76,6 +102,18 @@
   padding-top: 20px;
 }
 
+.expirySection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 20px;
+}
+
+.divider {
+  margin-top: 20px;
+  border-top: 1px solid rgba(226, 232, 240, 1);
+}
+
 .radioRow {
   display: flex;
   align-items: center;
@@ -97,6 +135,123 @@
   margin: 0;
 }
 
+.tierButton,
+.ruleButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid rgba(226, 232, 240, 1);
+  border-radius: 14px;
+  background: var(--color-white);
+  color: var(--color-text-strong);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tiers {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-top: 20px;
+}
+
+.tierCard {
+  border: 1px solid rgba(226, 232, 240, 1);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--color-white);
+}
+
+.tierHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  background: rgba(248, 250, 252, 1);
+}
+
+.tierHeading {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(2, 6, 23, 1);
+}
+
+.tierActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.iconButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-strong);
+  cursor: pointer;
+}
+
+.tierBody {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px;
+}
+
+.ruleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.currencyField {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  box-sizing: border-box;
+  padding: 0 16px;
+  border: 1px solid rgba(226, 232, 240, 1);
+  border-radius: 14px;
+  background: rgba(248, 250, 252, 1);
+}
+
+.currencySymbol {
+  font-size: 1rem;
+  color: rgba(100, 116, 139, 1);
+}
+
+.currencyField input {
+  flex: 1;
+  min-height: 50px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
+.currencyField:focus-within {
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+}
+
+.currencyField input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 @media (max-width: 900px) {
   .container {
     padding: 18px 16px;
@@ -109,5 +264,12 @@
 
   .fullWidth {
     grid-column: auto;
+  }
+
+  .sectionHeader,
+  .ruleHeader,
+  .tierHeader {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
