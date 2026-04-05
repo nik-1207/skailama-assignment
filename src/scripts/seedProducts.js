@@ -63,16 +63,6 @@ const products = [
   },
 ];
 
-if (
-  getProducts().length === 0 ||
-  getProducts().some(
-    (product) =>
-      !product.collectionId ||
-      !product.productType?.id ||
-      !product.productType?.name ||
-      !Array.isArray(product.tags) ||
-      product.tags.some((tag) => !tag.id || !tag.name),
-  )
-) {
+if (getProducts().length === 0) {
   seedProducts(products);
 }
