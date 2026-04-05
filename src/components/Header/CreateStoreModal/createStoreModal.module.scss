@@ -49,3 +49,10 @@
 .cancel:hover {
   background: rgba(100, 116, 139, 0.24);
 }
+
+
+.container {
+  gap: 8px;
+  display: flex;
+  flex-direction: column;
+}

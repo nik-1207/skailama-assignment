@@ -10,26 +10,41 @@ export const CreateStoreModal = () => {
   const addShop = useShopStore((state) => state.addShop);
 
   const [store, setStore] = useState("");
+  const [timezone, setTimezone] = useState();
 
   const onChange = (event) => {
     setStore(event.target.value);
   };
 
+  const onTimezoneChange = (event) => {
+    setTimezone(event.target.value);
+  };
+
   const onCancel = () => {
     setStore("");
+    setTimezone();
     close();
   };
 
   const onSave = () => {
     const name = store.trim();
     if (!name) return;
-    addShop(name);
+    addShop({ name, timezone });
     onCancel();
   };
 
   return (
     <Modal title="Create Store" onClose={onCancel} open={isOpen}>
-      <input className={styles.input} type="text" value={store} onChange={onChange} />
+      <div className={styles.container}>
+        <input className={styles.input} type="text" value={store} onChange={onChange} />
+        <select className={styles.input} value={timezone} onChange={onTimezoneChange}>
+          {Array.from(new Set(TIMEZONE_OPTIONS)).map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className={styles.actions}>
         <button className={styles.save} onClick={onSave}>
           Save

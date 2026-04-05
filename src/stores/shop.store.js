@@ -6,8 +6,8 @@ export const useShopStore = create((set) => ({
   shops: [],
   setActiveShop: (shop) => set({ activeShop: shop }),
   loadShops: () => set({ shops: getStores() }),
-  addShop: (name) => {
-    const shop = createStore(name);
+  addShop: ({ name, timezone }) => {
+    const shop = createStore({ name, timezone });
     set((state) => ({
       shops: [...state.shops, shop],
     }));

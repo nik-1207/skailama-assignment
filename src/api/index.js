@@ -1,7 +1,8 @@
-export const createStore = (name) => {
+export const createStore = ({ name, timezone }) => {
   const store = {
     name,
     id: crypto.randomUUID(),
+    timezone: timezone,
   };
   const items = localStorage.getItem("stores");
   localStorage.setItem("stores", JSON.stringify([...JSON.parse(items ?? "[]"), store]));
