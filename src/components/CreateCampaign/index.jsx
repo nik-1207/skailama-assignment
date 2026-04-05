@@ -5,6 +5,7 @@ import { TIMEZONE_OPTIONS } from "../utils";
 
 export const CreateCampaign = () => {
   const activeShop = useShopStore((state) => state.activeShop);
+  const isScheduled = true;
 
   return (
     <div className={styles.container}>
@@ -20,6 +21,7 @@ export const CreateCampaign = () => {
             <label htmlFor="campaignType">Campaign Type</label>
             <select id="campaignType" name="campaignType" defaultValue="percentage">
               <option value="percentage">Percentage</option>
+              <option value="number">Number</option>
             </select>
           </div>
           <div className={styles.field}>
@@ -32,6 +34,38 @@ export const CreateCampaign = () => {
               ))}
             </select>
           </div>
+        </div>
+      </Card>
+
+      <Card className={styles.card}>
+        <h1 className={styles.title}>Timing &amp; Schedule ({activeShop?.timezone ?? "UTC"})</h1>
+
+        <div className={styles.scheduleSection}>
+          <span className={styles.label}>Campaign Schedule</span>
+          <div className={styles.radioRow}>
+            <label className={styles.radioOption}>
+              <input checked={!isScheduled} name="campaignSchedule" readOnly type="radio" />
+              <span>Run campaign continuously</span>
+            </label>
+            <label className={styles.radioOption}>
+              <input checked={isScheduled} name="campaignSchedule" readOnly type="radio" />
+              <span>Run campaign on a schedule</span>
+            </label>
+          </div>
+
+          {isScheduled ? (
+            <div className={styles.form}>
+              <div className={styles.field}>
+                <label htmlFor="startDateTime">Start Date &amp; Time</label>
+                <input id="startDateTime" name="startDateTime" type="datetime-local" />
+              </div>
+
+              <div className={styles.field}>
+                <label htmlFor="endDateTime">End Date &amp; Time</label>
+                <input id="endDateTime" name="endDateTime" type="datetime-local" />
+              </div>
+            </div>
+          ) : null}
         </div>
       </Card>
     </div>

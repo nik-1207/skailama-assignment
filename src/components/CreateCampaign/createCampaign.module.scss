@@ -2,6 +2,9 @@
   max-width: 1480px;
   margin: 0 auto;
   padding: 22px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 .card {
@@ -36,6 +39,12 @@
   color: rgba(2, 6, 23, 1);
 }
 
+.label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(2, 6, 23, 1);
+}
+
 .field input,
 .field select {
   width: 100%;
@@ -54,6 +63,34 @@
   outline: none;
   border-color: rgba(59, 130, 246, 0.7);
   box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+}
+
+.scheduleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: 20px;
+}
+
+.radioRow {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.radioOption {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  color: var(--color-text-strong);
+}
+
+.radioOption input {
+  width: 20px;
+  height: 20px;
+  margin: 0;
 }
 
 @media (max-width: 900px) {
