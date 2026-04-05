@@ -11,4 +11,5 @@ export const createOrderSchema = z.object({
       message: "Order amount must be a valid non-negative number",
     }),
   orderCreatedAt: z.string().trim().min(1, "Order created at is required"),
+  lines: z.array(z.object({})).min(1, "Order should have at least 1 product"),
 });
