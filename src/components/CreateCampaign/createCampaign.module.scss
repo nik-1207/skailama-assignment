@@ -1,0 +1,68 @@
+.container {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 22px 36px;
+}
+
+.card {
+  gap: 0;
+}
+
+.title {
+  margin: 0;
+  padding-bottom: 18px;
+  border-bottom: 1px solid rgba(226, 232, 240, 1);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: rgba(2, 6, 23, 1);
+}
+
+.form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 24px;
+  padding-top: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.field label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(2, 6, 23, 1);
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 52px;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border: 1px solid rgba(226, 232, 240, 1);
+  border-radius: 14px;
+  background: var(--color-white);
+  color: var(--color-text-strong);
+  font-size: 1rem;
+}
+
+.field input:focus,
+.field select:focus {
+  outline: none;
+  border-color: rgba(59, 130, 246, 0.7);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.14);
+}
+
+@media (max-width: 900px) {
+  .container {
+    padding: 18px 16px;
+  }
+
+  .form {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
