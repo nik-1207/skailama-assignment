@@ -3,6 +3,7 @@ import { useModalStore } from "./modal.store";
 import { useState } from "react";
 import { useShopStore } from "../../../stores/shop.store";
 import styles from "./createStoreModal.module.scss";
+import { TIMEZONE_OPTIONS } from "../../utils";
 
 export const CreateStoreModal = () => {
   const close = useModalStore((state) => state.closeModal);
