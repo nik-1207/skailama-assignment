@@ -173,20 +173,20 @@ export const CAMPAIGN_RULE_DEFINITIONS = {
   "product-tags": {
     type: "product-rule",
     label: "Product Tags",
-    placeholder: "Enter Tag",
-    inputType: "text",
+    placeholder: "Select product tags",
+    inputType: "multiselect",
     operatorType: "equality",
     defaultOperator: "is",
-    defaultValue: "",
+    defaultValue: [],
   },
   "product-types": {
     type: "product-rule",
     label: "Product Types",
-    placeholder: "Enter Product Type",
-    inputType: "text",
+    placeholder: "Select product types",
+    inputType: "multiselect",
     operatorType: "equality",
     defaultOperator: "is",
-    defaultValue: "",
+    defaultValue: [],
   },
 };
 

@@ -1,19 +1,19 @@
 import { CustomerRuleInput } from "../CustomerRuleInput";
-import { CustomerTagRuleInput } from "../CustomerTagRuleInput";
+import { MultiValueRuleInput } from "../MultiValueRuleInput";
 
-export const RuleInputRenderer = ({ onDelete, onOperatorChange, onValueChange, rule, tagOptions }) => {
+export const RuleInputRenderer = ({ onDelete, onOperatorChange, onValueChange, productTagOptions, productTypeOptions, rule, tagOptions }) => {
   switch (rule.field) {
     case "customer-tags":
       return (
-        <CustomerTagRuleInput
+        <MultiValueRuleInput
           label={rule.label}
           onDelete={onDelete}
           onOperatorChange={onOperatorChange}
           onValueChange={onValueChange}
           operatorOptions={rule.operatorOptions}
           operatorValue={rule.operator}
+          options={tagOptions}
           placeholder={rule.placeholder}
-          tagOptions={tagOptions}
           value={rule.value}
         />
       );
@@ -29,6 +29,34 @@ export const RuleInputRenderer = ({ onDelete, onOperatorChange, onValueChange, r
           operatorValue={rule.operator}
           placeholder={rule.placeholder}
           prefix="$"
+          value={rule.value}
+        />
+      );
+    case "product-tags":
+      return (
+        <MultiValueRuleInput
+          label={rule.label}
+          onDelete={onDelete}
+          onOperatorChange={onOperatorChange}
+          onValueChange={onValueChange}
+          operatorOptions={rule.operatorOptions}
+          operatorValue={rule.operator}
+          options={productTagOptions}
+          placeholder={rule.placeholder}
+          value={rule.value}
+        />
+      );
+    case "product-types":
+      return (
+        <MultiValueRuleInput
+          label={rule.label}
+          onDelete={onDelete}
+          onOperatorChange={onOperatorChange}
+          onValueChange={onValueChange}
+          operatorOptions={rule.operatorOptions}
+          operatorValue={rule.operator}
+          options={productTypeOptions}
+          placeholder={rule.placeholder}
           value={rule.value}
         />
       );

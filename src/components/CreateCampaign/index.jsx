@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, CircleHelp, Plus, Trash2 } from "lucide-react";
 import { Card } from "../Card";
 import { useCustomerTagStore } from "../../stores/customerTag.store";
+import { useProductStore } from "../../stores/product.store";
 import { useShopStore } from "../../stores/shop.store";
 import { RuleInputRenderer } from "./RuleInputRenderer";
 import { RuleSelectionModal } from "./RuleSelectionModal";
@@ -13,6 +14,9 @@ export const CreateCampaign = () => {
   const activeShop = useShopStore((state) => state.activeShop);
   const customerTags = useCustomerTagStore((state) => state.customerTags);
   const loadCustomerTags = useCustomerTagStore((state) => state.loadCustomerTags);
+  const products = useProductStore((state) => state.products);
+  const loadProducts = useProductStore((state) => state.loadProducts);
+  
   const timezone = activeShop?.timezone ?? TIMEZONE_OPTIONS[0];
   const initialTierId = crypto.randomUUID();
   const [values, setValues] = useState({
@@ -43,7 +47,8 @@ export const CreateCampaign = () => {
 
   useEffect(() => {
     loadCustomerTags();
-  }, [loadCustomerTags]);
+    loadProducts();
+  }, [loadCustomerTags, loadProducts]);
 
   useEffect(() => {
     setValues((current) => ({
@@ -192,6 +197,31 @@ export const CreateCampaign = () => {
     value: tag.id,
     label: tag.name,
   }));
+
+  const productTagOptions = useMemo(
+    () =>
+      Array.from(
+        new Map(
+          products
+            .flatMap((product) => product.tags ?? [])
+            .map((tag) => [tag.id, { value: tag.id, label: tag.name }]),
+        ).values(),
+      ),
+    [products],
+  );
+
+  const productTypeOptions = useMemo(
+    () =>
+      Array.from(
+        new Map(
+          products
+            .map((product) => product.productType)
+            .filter(Boolean)
+            .map((productType) => [productType.id, { value: productType.id, label: productType.name }]),
+        ).values(),
+      ),
+    [products],
+  );
 
   const addRuleToTier = (field) => {
     if (!ruleModalTierId) {
@@ -470,6 +500,8 @@ export const CreateCampaign = () => {
                               )
                             }
                             rule={rule}
+                            productTagOptions={productTagOptions}
+                            productTypeOptions={productTypeOptions}
                             tagOptions={customerTagOptions}
                           />
                         ))}

@@ -48,6 +48,14 @@ export const seedProducts = (products) => {
       products.map((product) => ({
         id: product.id,
         name: product.name,
+        productType: {
+          id: product.productType.id,
+          name: product.productType.name,
+        },
+        tags: product.tags.map((tag) => ({
+          id: tag.id,
+          name: tag.name,
+        })),
         variants: product.variants.map((variant) => ({
           id: variant.id,
           name: variant.name,
