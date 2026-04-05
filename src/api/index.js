@@ -48,6 +48,7 @@ export const seedProducts = (products) => {
       products.map((product) => ({
         id: product.id,
         name: product.name,
+        collectionId: product.collectionId ?? null,
         productType: {
           id: product.productType.id,
           name: product.productType.name,
@@ -60,6 +61,20 @@ export const seedProducts = (products) => {
           id: variant.id,
           name: variant.name,
         })),
+      })),
+    ),
+  );
+};
+
+export const getCollections = () => JSON.parse(localStorage.getItem("collections") ?? "[]");
+
+export const seedCollections = (collections) => {
+  localStorage.setItem(
+    "collections",
+    JSON.stringify(
+      collections.map((collection) => ({
+        id: collection.id,
+        name: collection.name,
       })),
     ),
   );

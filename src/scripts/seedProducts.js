@@ -4,6 +4,7 @@ const products = [
   {
     id: "prod-classic-tee",
     name: "Classic Tee",
+    collectionId: "pcol-summer-essentials",
     productType: { id: "ptype-apparel", name: "Apparel" },
     tags: [
       { id: "ptag-bestseller", name: "Bestseller" },
@@ -18,6 +19,7 @@ const products = [
   {
     id: "prod-canvas-tote",
     name: "Canvas Tote",
+    collectionId: "pcol-everyday-carry",
     productType: { id: "ptype-accessories", name: "Accessories" },
     tags: [
       { id: "ptag-eco", name: "Eco" },
@@ -32,6 +34,7 @@ const products = [
   {
     id: "prod-everyday-bottle",
     name: "Everyday Bottle",
+    collectionId: "pcol-fitness-favorites",
     productType: { id: "ptype-drinkware", name: "Drinkware" },
     tags: [
       { id: "ptag-gym", name: "Gym" },
@@ -46,6 +49,7 @@ const products = [
   {
     id: "prod-signature-cap",
     name: "Signature Cap",
+    collectionId: "pcol-street-style",
     productType: { id: "ptype-headwear", name: "Headwear" },
     tags: [
       { id: "ptag-streetwear", name: "Streetwear" },
@@ -59,6 +63,16 @@ const products = [
   },
 ];
 
-if (getProducts().length === 0) {
+if (
+  getProducts().length === 0 ||
+  getProducts().some(
+    (product) =>
+      !product.collectionId ||
+      !product.productType?.id ||
+      !product.productType?.name ||
+      !Array.isArray(product.tags) ||
+      product.tags.some((tag) => !tag.id || !tag.name),
+  )
+) {
   seedProducts(products);
 }

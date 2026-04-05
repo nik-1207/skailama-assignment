@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, CircleHelp, Plus, Trash2 } from "lucide-react";
 import { Card } from "../Card";
+import { useCollectionStore } from "../../stores/collection.store";
 import { useCustomerTagStore } from "../../stores/customerTag.store";
 import { useProductStore } from "../../stores/product.store";
 import { useShopStore } from "../../stores/shop.store";
@@ -12,6 +13,8 @@ import { TIMEZONE_OPTIONS } from "../utils";
 
 export const CreateCampaign = () => {
   const activeShop = useShopStore((state) => state.activeShop);
+  const collections = useCollectionStore((state) => state.collections);
+  const loadCollections = useCollectionStore((state) => state.loadCollections);
   const customerTags = useCustomerTagStore((state) => state.customerTags);
   const loadCustomerTags = useCustomerTagStore((state) => state.loadCustomerTags);
   const products = useProductStore((state) => state.products);
@@ -46,9 +49,10 @@ export const CreateCampaign = () => {
   const [ruleModalTierId, setRuleModalTierId] = useState(null);
 
   useEffect(() => {
+    loadCollections();
     loadCustomerTags();
     loadProducts();
-  }, [loadCustomerTags, loadProducts]);
+  }, [loadCollections, loadCustomerTags, loadProducts]);
 
   useEffect(() => {
     setValues((current) => ({
@@ -208,6 +212,38 @@ export const CreateCampaign = () => {
         ).values(),
       ),
     [products],
+  );
+
+  const productOptions = useMemo(
+    () =>
+      Array.from(
+        new Map(products.map((product) => [product.id, { value: product.id, label: product.name }])).values(),
+      ),
+    [products],
+  );
+
+  const variantOptions = useMemo(
+    () =>
+      Array.from(
+        new Map(
+          products
+            .flatMap((product) => product.variants ?? [])
+            .map((variant) => [variant.id, { value: variant.id, label: variant.name }]),
+        ).values(),
+      ),
+    [products],
+  );
+
+  const productCollectionOptions = useMemo(
+    () =>
+      Array.from(
+        new Map(
+          collections
+            .filter(Boolean)
+            .map((collection) => [collection.id, { value: collection.id, label: collection.name }]),
+        ).values(),
+      ),
+    [collections],
   );
 
   const productTypeOptions = useMemo(
@@ -500,9 +536,12 @@ export const CreateCampaign = () => {
                               )
                             }
                             rule={rule}
+                            productCollectionOptions={productCollectionOptions}
+                            productOptions={productOptions}
                             productTagOptions={productTagOptions}
                             productTypeOptions={productTypeOptions}
                             tagOptions={customerTagOptions}
+                            variantOptions={variantOptions}
                           />
                         ))}
                       </div>

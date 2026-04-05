@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
+import "./scripts/seedCollections";
 import "./scripts/seedCustomerTags";
 import "./scripts/seedProducts";
 import "./scripts/seedUsers";
