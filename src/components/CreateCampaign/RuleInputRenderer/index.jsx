@@ -2,6 +2,7 @@ import { CustomerRuleInput } from "../CustomerRuleInput";
 import { MultiValueRuleInput } from "../MultiValueRuleInput";
 
 export const RuleInputRenderer = ({
+  currencyOptions,
   onDelete,
   onOperatorChange,
   onValueChange,
@@ -40,6 +41,49 @@ export const RuleInputRenderer = ({
           operatorValue={rule.operator}
           placeholder={rule.placeholder}
           prefix="$"
+          value={rule.value}
+        />
+      );
+    case "cart-quantity":
+      return (
+        <CustomerRuleInput
+          inputType={rule.inputType}
+          label={rule.label}
+          onDelete={onDelete}
+          onOperatorChange={onOperatorChange}
+          onValueChange={onValueChange}
+          operatorOptions={rule.operatorOptions}
+          operatorValue={rule.operator}
+          placeholder={rule.placeholder}
+          value={rule.value}
+        />
+      );
+    case "cart-total":
+      return (
+        <CustomerRuleInput
+          inputType={rule.inputType}
+          label={rule.label}
+          onDelete={onDelete}
+          onOperatorChange={onOperatorChange}
+          onValueChange={onValueChange}
+          operatorOptions={rule.operatorOptions}
+          operatorValue={rule.operator}
+          placeholder={rule.placeholder}
+          prefix="$"
+          value={rule.value}
+        />
+      );
+    case "cart-currency":
+      return (
+        <MultiValueRuleInput
+          label={rule.label}
+          onDelete={onDelete}
+          onOperatorChange={onOperatorChange}
+          onValueChange={onValueChange}
+          operatorOptions={rule.operatorOptions}
+          operatorValue={rule.operator}
+          options={currencyOptions}
+          placeholder={rule.placeholder}
           value={rule.value}
         />
       );

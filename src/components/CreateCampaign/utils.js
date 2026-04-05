@@ -137,11 +137,11 @@ export const CAMPAIGN_RULE_DEFINITIONS = {
   "cart-currency": {
     type: "cart-rule",
     label: "Cart Currency",
-    placeholder: "Enter Currency",
-    inputType: "text",
+    placeholder: "Select currency",
+    inputType: "multiselect",
     operatorType: "equality",
     defaultOperator: "is",
-    defaultValue: "",
+    defaultValue: [],
   },
   "specific-products": {
     type: "product-rule",

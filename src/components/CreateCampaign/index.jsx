@@ -9,7 +9,7 @@ import { RuleInputRenderer } from "./RuleInputRenderer";
 import { RuleSelectionModal } from "./RuleSelectionModal";
 import { createCampaignRuleDraft, buildCampaignRuleLogic } from "./utils";
 import styles from "./createCampaign.module.scss";
-import { TIMEZONE_OPTIONS } from "../utils";
+import { CURRENCY_OPTIONS, TIMEZONE_OPTIONS } from "../utils";
 
 export const CreateCampaign = () => {
   const activeShop = useShopStore((state) => state.activeShop);
@@ -200,6 +200,11 @@ export const CreateCampaign = () => {
   const customerTagOptions = customerTags.map((tag) => ({
     value: tag.id,
     label: tag.name,
+  }));
+
+  const currencyOptions = CURRENCY_OPTIONS.map((currency) => ({
+    value: currency,
+    label: currency,
   }));
 
   const productTagOptions = useMemo(
@@ -525,6 +530,7 @@ export const CreateCampaign = () => {
                         {tier.rules.map((rule) => (
                           <RuleInputRenderer
                             key={rule.id}
+                            currencyOptions={currencyOptions}
                             onDelete={() => deleteRule(tier.id, rule.id)}
                             onOperatorChange={(event) => updateRule(tier.id, rule.id, "operator", event.target.value)}
                             onValueChange={(nextValue) =>
