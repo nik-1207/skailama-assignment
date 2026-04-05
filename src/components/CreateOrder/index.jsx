@@ -6,6 +6,7 @@ import { useCustomerStore } from "../../stores/customer.store";
 import { createOrderSchema } from "./schema";
 import { zodResolver } from "./zodResolver";
 import styles from "./createOrder.module.scss";
+import { ROUTE_HOME, useRouteStore } from "../../stores/route.store";
 
 const resolveCreateOrder = zodResolver(createOrderSchema);
 
@@ -13,6 +14,8 @@ export const CreateOrder = () => {
   const activeShop = useShopStore((state) => state.activeShop);
   const customers = useCustomerStore((state) => state.customers);
   const loadCustomers = useCustomerStore((state) => state.loadCustomers);
+  const setRoute = useRouteStore((state) => state.setRoute);
+
   const [values, setValues] = useState({
     storeId: activeShop?.id ?? "",
     customerId: "",
@@ -167,7 +170,7 @@ export const CreateOrder = () => {
             <button className={styles.primaryButton} type="submit">
               create order
             </button>
-            <button className={styles.secondaryButton} type="button">
+            <button className={styles.secondaryButton} onClick={() => setRoute(ROUTE_HOME)}>
               Cancel
             </button>
           </div>
