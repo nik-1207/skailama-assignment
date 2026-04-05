@@ -28,6 +28,7 @@ export const CreateCampaign = () => {
         id: initialTierId,
         name: "Tier 1",
         cashbackValue: "100",
+        matchType: "and",
         rules: [],
       },
     ],
@@ -105,6 +106,7 @@ export const CreateCampaign = () => {
           id: nextTierId,
           name: `Tier ${current.tiers.length + 1}`,
           cashbackValue: "",
+          matchType: "and",
           rules: [],
         },
       ],
@@ -341,8 +343,29 @@ export const CreateCampaign = () => {
 
                 {openTierIds.includes(tier.id) ? (
                   <div className={styles.tierBody}>
-                    <div className={styles.ruleHeader}>
-                      <span className={styles.label}>Eligibility rules</span>
+                  <div className={styles.ruleHeader}>
+                      <div className={styles.ruleHeaderLeft}>
+                        <span className={styles.label}>Eligibility rules</span>
+                        <div className={styles.matchControl}>
+                          <span className={styles.matchLabel}>Match:</span>
+                          <div className={styles.matchTabs}>
+                            <button
+                              className={tier.matchType === "and" ? styles.matchTabActive : styles.matchTab}
+                              onClick={() => updateTier(tier.id, "matchType", "and")}
+                              type="button"
+                            >
+                              AND
+                            </button>
+                            <button
+                              className={tier.matchType === "or" ? styles.matchTabActive : styles.matchTab}
+                              onClick={() => updateTier(tier.id, "matchType", "or")}
+                              type="button"
+                            >
+                              OR
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                       <button className={styles.ruleButton} onClick={() => setRuleModalTierId(tier.id)} type="button">
                         <Plus size={18} />
                         <span>Add rule</span>
@@ -354,7 +377,7 @@ export const CreateCampaign = () => {
                         {tier.rules.map((rule) => (
                           <div className={styles.ruleItem} key={rule.id}>
                             <span className={styles.ruleName}>{rule.field}</span>
-                            <span className={styles.ruleMeta}>{rule.type} - {rule.operator}</span>
+                            <span className={styles.ruleMeta}>{rule.type}</span>
                           </div>
                         ))}
                       </div>

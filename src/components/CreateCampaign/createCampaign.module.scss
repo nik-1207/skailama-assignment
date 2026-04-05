@@ -242,6 +242,52 @@
   gap: 16px;
 }
 
+.ruleHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.matchControl {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.matchLabel {
+  font-size: 1rem;
+  color: rgba(100, 116, 139, 1);
+}
+
+.matchTabs {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+  border: 1px solid rgba(226, 232, 240, 1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 1);
+}
+
+.matchTab,
+.matchTabActive {
+  min-width: 56px;
+  min-height: 32px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: rgba(15, 23, 42, 1);
+  cursor: pointer;
+}
+
+.matchTabActive {
+  background: rgba(59, 130, 246, 1);
+  color: rgba(255, 255, 255, 1);
+}
+
 .ruleList {
   display: flex;
   flex-direction: column;
@@ -325,5 +371,9 @@
   .tierHeader {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .ruleHeaderLeft {
+    justify-content: space-between;
   }
 }
