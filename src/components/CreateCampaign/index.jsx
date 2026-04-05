@@ -423,28 +423,30 @@ export const CreateCampaign = () => {
 
                 {openTierIds.includes(tier.id) ? (
                   <div className={styles.tierBody}>
-                  <div className={styles.ruleHeader}>
+                    <div className={styles.ruleHeader}>
                       <div className={styles.ruleHeaderLeft}>
                         <span className={styles.label}>Eligibility rules</span>
-                        <div className={styles.matchControl}>
-                          <span className={styles.matchLabel}>Match:</span>
-                          <div className={styles.matchTabs}>
-                            <button
-                              className={tier.matchType === "and" ? styles.matchTabActive : styles.matchTab}
-                              onClick={() => updateTier(tier.id, "matchType", "and")}
-                              type="button"
-                            >
-                              AND
-                            </button>
-                            <button
-                              className={tier.matchType === "or" ? styles.matchTabActive : styles.matchTab}
-                              onClick={() => updateTier(tier.id, "matchType", "or")}
-                              type="button"
-                            >
-                              OR
-                            </button>
+                        {tier.rules.length ? (
+                          <div className={styles.matchControl}>
+                            <span className={styles.matchLabel}>Match:</span>
+                            <div className={styles.matchTabs}>
+                              <button
+                                className={tier.matchType === "and" ? styles.matchTabActive : styles.matchTab}
+                                onClick={() => updateTier(tier.id, "matchType", "and")}
+                                type="button"
+                              >
+                                AND
+                              </button>
+                              <button
+                                className={tier.matchType === "or" ? styles.matchTabActive : styles.matchTab}
+                                onClick={() => updateTier(tier.id, "matchType", "or")}
+                                type="button"
+                              >
+                                OR
+                              </button>
+                            </div>
                           </div>
-                        </div>
+                        ) : null}
                       </div>
                       <button className={styles.ruleButton} onClick={() => setRuleModalTierId(tier.id)} type="button">
                         <Plus size={18} />
