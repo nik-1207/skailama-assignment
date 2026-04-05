@@ -3,7 +3,7 @@ import { Modal } from "../../Modal";
 import { CAMPAIGN_RULE_GROUPS, CAMPAIGN_RULE_GROUP_ICONS } from "../utils";
 import styles from "./ruleSelectionModal.module.scss";
 
-export const RuleSelectionModal = ({ onClose, open }) => {
+export const RuleSelectionModal = ({ onClose, onSelectRule, open }) => {
   return (
     <Modal onClose={onClose} open={open} title="Select eligibility rule">
       <div className={styles.content}>
@@ -19,7 +19,7 @@ export const RuleSelectionModal = ({ onClose, open }) => {
 
               <div className={styles.ruleList}>
                 {group.rules.map((rule) => (
-                  <button className={styles.ruleButton} key={rule.key} type="button">
+                  <button className={styles.ruleButton} key={rule.key} onClick={() => onSelectRule(rule.key)} type="button">
                     <div className={styles.ruleText}>
                       <span className={styles.ruleLabel}>{rule.label}</span>
                       <span className={styles.ruleDescription}>{rule.description}</span>

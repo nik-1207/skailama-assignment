@@ -76,3 +76,187 @@ export const CAMPAIGN_RULE_GROUP_ICONS = {
   "cart-rules": ShoppingCart,
   "product-rules": Tag,
 };
+
+export const RULE_OPERATOR_OPTIONS = {
+  equality: [
+    { value: "is", label: "Is" },
+    { value: "is-not", label: "Is not" },
+  ],
+  comparison: [
+    { value: ">=", label: "Greater than or equal to" },
+    { value: "<=", label: "Less than or equal to" },
+    { value: "=", label: "Equal to" },
+  ],
+};
+
+const getOperatorOptions = (operatorType) => {
+  if (operatorType === "comparison") {
+    return RULE_OPERATOR_OPTIONS.comparison;
+  }
+
+  return RULE_OPERATOR_OPTIONS.equality;
+};
+
+export const CAMPAIGN_RULE_DEFINITIONS = {
+  "customer-tags": {
+    type: "customer-rule",
+    label: "Customer Tags",
+    placeholder: "Enter Tag",
+    inputType: "text",
+    operatorType: "equality",
+    defaultOperator: "is",
+    defaultValue: "",
+  },
+  "customer-spent": {
+    type: "customer-rule",
+    label: "Customer Lifetime Spent",
+    placeholder: "0",
+    inputType: "number",
+    operatorType: "comparison",
+    defaultOperator: ">=",
+    defaultValue: "0",
+  },
+  "cart-quantity": {
+    type: "cart-rule",
+    label: "Cart Quantity",
+    placeholder: "0",
+    inputType: "number",
+    operatorType: "comparison",
+    defaultOperator: ">=",
+    defaultValue: "0",
+  },
+  "cart-total": {
+    type: "cart-rule",
+    label: "Cart Total",
+    placeholder: "0",
+    inputType: "number",
+    operatorType: "comparison",
+    defaultOperator: ">=",
+    defaultValue: "0",
+  },
+  "cart-currency": {
+    type: "cart-rule",
+    label: "Cart Currency",
+    placeholder: "Enter Currency",
+    inputType: "text",
+    operatorType: "equality",
+    defaultOperator: "is",
+    defaultValue: "",
+  },
+  "specific-products": {
+    type: "product-rule",
+    label: "Specific Products",
+    placeholder: "Enter Product",
+    inputType: "text",
+    operatorType: "equality",
+    defaultOperator: "is",
+    defaultValue: "",
+  },
+  "specific-variants": {
+    type: "product-rule",
+    label: "Specific Variants",
+    placeholder: "Enter Variant",
+    inputType: "text",
+    operatorType: "equality",
+    defaultOperator: "is",
+    defaultValue: "",
+  },
+  "specific-collection": {
+    type: "product-rule",
+    label: "Specific Collection",
+    placeholder: "Enter Collection",
+    inputType: "text",
+    operatorType: "equality",
+    defaultOperator: "is",
+    defaultValue: "",
+  },
+  "product-tags": {
+    type: "product-rule",
+    label: "Product Tags",
+    placeholder: "Enter Tag",
+    inputType: "text",
+    operatorType: "equality",
+    defaultOperator: "is",
+    defaultValue: "",
+  },
+  "product-types": {
+    type: "product-rule",
+    label: "Product Types",
+    placeholder: "Enter Product Type",
+    inputType: "text",
+    operatorType: "equality",
+    defaultOperator: "is",
+    defaultValue: "",
+  },
+};
+
+const getVarPathByField = (field) => {
+  switch (field) {
+    case "customer-tags":
+      return "customer.tags";
+    case "customer-spent":
+      return "customer.totalSpent";
+    case "cart-quantity":
+      return "cart.quantity";
+    case "cart-total":
+      return "cart.total";
+    case "cart-currency":
+      return "cart.currency";
+    case "specific-products":
+      return "cart.productIds";
+    case "specific-variants":
+      return "cart.variantIds";
+    case "specific-collection":
+      return "cart.collectionIds";
+    case "product-tags":
+      return "cart.productTags";
+    case "product-types":
+      return "cart.productTypes";
+    default:
+      return field;
+  }
+};
+
+export const buildCampaignRuleLogic = ({ field, operator, value }) => {
+  const variable = { var: getVarPathByField(field) };
+
+  switch (operator) {
+    case "is":
+      return { "==": [variable, value] };
+    case "is-not":
+      return { "!=": [variable, value] };
+    case ">=":
+      return { ">=": [variable, Number(value || 0)] };
+    case "<=":
+      return { "<=": [variable, Number(value || 0)] };
+    case "=":
+      return { "==": [variable, Number(value || 0)] };
+    default:
+      return { "==": [variable, value] };
+  }
+};
+
+export const createCampaignRuleDraft = (field) => {
+  const definition = CAMPAIGN_RULE_DEFINITIONS[field];
+
+  if (!definition) {
+    return null;
+  }
+
+  const draft = {
+    id: crypto.randomUUID(),
+    type: definition.type,
+    field,
+    label: definition.label,
+    placeholder: definition.placeholder,
+    inputType: definition.inputType,
+    operator: definition.defaultOperator,
+    operatorOptions: getOperatorOptions(definition.operatorType),
+    value: definition.defaultValue,
+  };
+
+  return {
+    ...draft,
+    logic: buildCampaignRuleLogic(draft),
+  };
+};

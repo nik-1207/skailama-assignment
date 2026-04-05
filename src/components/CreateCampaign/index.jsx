@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { ChevronDown, CircleHelp, Plus, Trash2 } from "lucide-react";
 import { Card } from "../Card";
 import { useShopStore } from "../../stores/shop.store";
+import { RuleInputRenderer } from "./RuleInputRenderer";
 import { RuleSelectionModal } from "./RuleSelectionModal";
+import { createCampaignRuleDraft, buildCampaignRuleLogic } from "./utils";
 import styles from "./createCampaign.module.scss";
 import { TIMEZONE_OPTIONS } from "../utils";
 
@@ -130,6 +132,45 @@ export const CreateCampaign = () => {
     setOpenTierIds((current) => current.filter((id) => id !== tierId));
   };
 
+  const updateRule = (tierId, ruleId, key, value) => {
+    setValues((current) => ({
+      ...current,
+      tiers: current.tiers.map((tier) =>
+        tier.id === tierId
+          ? {
+              ...tier,
+              rules: tier.rules.map((rule) => {
+                if (rule.id !== ruleId) {
+                  return rule;
+                }
+
+                const nextRule = { ...rule, [key]: value };
+
+                return {
+                  ...nextRule,
+                  logic: buildCampaignRuleLogic(nextRule),
+                };
+              }),
+            }
+          : tier,
+      ),
+    }));
+  };
+
+  const deleteRule = (tierId, ruleId) => {
+    setValues((current) => ({
+      ...current,
+      tiers: current.tiers.map((tier) =>
+        tier.id === tierId
+          ? {
+              ...tier,
+              rules: tier.rules.filter((rule) => rule.id !== ruleId),
+            }
+          : tier,
+      ),
+    }));
+  };
+
   const toggleTier = (tierId) => {
     setOpenTierIds((current) =>
       current.includes(tierId) ? current.filter((id) => id !== tierId) : [...current, tierId],
@@ -137,6 +178,33 @@ export const CreateCampaign = () => {
   };
 
   const closeRuleModal = () => {
+    setRuleModalTierId(null);
+  };
+
+  const addRuleToTier = (field) => {
+    if (!ruleModalTierId) {
+      return;
+    }
+
+    const draft = createCampaignRuleDraft(field);
+
+    if (!draft) {
+      setRuleModalTierId(null);
+      return;
+    }
+
+    setValues((current) => ({
+      ...current,
+      tiers: current.tiers.map((tier) =>
+        tier.id === ruleModalTierId
+          ? {
+              ...tier,
+              rules: [...tier.rules, draft],
+            }
+          : tier,
+      ),
+    }));
+
     setRuleModalTierId(null);
   };
 
@@ -375,10 +443,13 @@ export const CreateCampaign = () => {
                     {tier.rules?.length ? (
                       <div className={styles.ruleList}>
                         {tier.rules.map((rule) => (
-                          <div className={styles.ruleItem} key={rule.id}>
-                            <span className={styles.ruleName}>{rule.field}</span>
-                            <span className={styles.ruleMeta}>{rule.type}</span>
-                          </div>
+                          <RuleInputRenderer
+                            key={rule.id}
+                            onDelete={() => deleteRule(tier.id, rule.id)}
+                            onOperatorChange={(event) => updateRule(tier.id, rule.id, "operator", event.target.value)}
+                            onValueChange={(event) => updateRule(tier.id, rule.id, "value", event.target.value)}
+                            rule={rule}
+                          />
                         ))}
                       </div>
                     ) : null}
@@ -411,7 +482,7 @@ export const CreateCampaign = () => {
         </Card>
       </form>
 
-      <RuleSelectionModal onClose={closeRuleModal} open={Boolean(ruleModalTierId)} />
+      <RuleSelectionModal onClose={closeRuleModal} onSelectRule={addRuleToTier} open={Boolean(ruleModalTierId)} />
     </>
   );
 };
