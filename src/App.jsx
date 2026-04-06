@@ -2,6 +2,7 @@ import { Breadcrumbs } from "./components/Breadcrumbs";
 import { Campaigns } from "./components/Campaigns";
 import { CreateCampaign } from "./components/CreateCampaign";
 import { CreateOrder } from "./components/CreateOrder";
+import { Customers } from "./components/Customers";
 import { Header } from "./components/Header";
 import { Home } from "./components/Home";
 import {
@@ -27,7 +28,7 @@ function App() {
           {route === ROUTE_ORDERS ? <CreateOrder /> : null}
           {route === ROUTE_CAMPAIGNS ? <Campaigns /> : null}
           {route === ROUTE_CREATE_CAMPAIGN ? <CreateCampaign /> : null}
-          {route === ROUTE_CUSTOMERS ? <>customers</> : null}
+          {route === ROUTE_CUSTOMERS ? <Customers /> : null}
         </div>
       </main>
       <div id="modal-root" />

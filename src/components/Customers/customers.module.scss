@@ -1,0 +1,67 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0 24px 24px;
+}
+
+.title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  color: rgba(2, 6, 23, 1);
+}
+
+.wrapper {
+  overflow-x: auto;
+  border: 1px solid rgba(226, 232, 240, 1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 22px 30px;
+  text-align: left;
+}
+
+.table th {
+  background: rgba(248, 250, 252, 1);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: rgba(100, 116, 139, 1);
+}
+
+.table td {
+  border-top: 1px solid rgba(226, 232, 240, 1);
+  font-size: 1rem;
+  color: rgba(15, 23, 42, 1);
+}
+
+.nameCell,
+.balanceCell {
+  font-weight: 700;
+}
+
+.emailCell,
+.updatedCell {
+  color: rgba(100, 116, 139, 1);
+}
+
+@media (max-width: 900px) {
+  .page {
+    padding: 0 16px 18px;
+  }
+
+  .table {
+    min-width: 760px;
+  }
+}
