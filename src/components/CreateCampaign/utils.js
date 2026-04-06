@@ -4,6 +4,37 @@ import { createCampaignSchema } from "./schema";
 
 export const resolveCreateCampaign = zodResolver(createCampaignSchema);
 
+const getOperatorOptions = (operatorType) => {
+  if (operatorType === "comparison") {
+    return RULE_OPERATOR_OPTIONS.comparison;
+  }
+
+  return RULE_OPERATOR_OPTIONS.equality;
+};
+
+export const hydrateCampaignRule = (rule) => {
+  const definition = CAMPAIGN_RULE_DEFINITIONS[rule.field];
+
+  if (!definition) {
+    return rule;
+  }
+
+  const nextRule = {
+    ...rule,
+    label: definition.label,
+    placeholder: definition.placeholder,
+    inputType: definition.inputType,
+    operator: rule.operator ?? definition.defaultOperator,
+    operatorOptions: getOperatorOptions(definition.operatorType),
+    value: rule.value ?? definition.defaultValue,
+  };
+
+  return {
+    ...nextRule,
+    logic: rule.logic ?? buildCampaignRuleLogic(nextRule),
+  };
+};
+
 export const getInitialValues = ({ activeShop, editingCampaign, timezone }) => {
   if (editingCampaign) {
     return {
@@ -21,7 +52,10 @@ export const getInitialValues = ({ activeShop, editingCampaign, timezone }) => {
       expirationDays: editingCampaign.expirationDays ?? null,
       expiryTime: editingCampaign.expiryTime ?? null,
       tiers: editingCampaign.tiers?.length
-        ? editingCampaign.tiers
+        ? editingCampaign.tiers.map((tier) => ({
+            ...tier,
+            rules: tier.rules?.map(hydrateCampaignRule) ?? [],
+          }))
         : [
             {
               id: crypto.randomUUID(),
@@ -149,14 +183,6 @@ export const RULE_OPERATOR_OPTIONS = {
     { value: "<=", label: "Less than or equal to" },
     { value: "=", label: "Equal to" },
   ],
-};
-
-const getOperatorOptions = (operatorType) => {
-  if (operatorType === "comparison") {
-    return RULE_OPERATOR_OPTIONS.comparison;
-  }
-
-  return RULE_OPERATOR_OPTIONS.equality;
 };
 
 export const CAMPAIGN_RULE_DEFINITIONS = {

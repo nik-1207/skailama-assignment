@@ -7,12 +7,12 @@ export const MultiValueRuleInput = ({
   onDelete,
   onOperatorChange,
   onValueChange,
-  operatorOptions,
+  operatorOptions = [],
   operatorValue,
-  options,
+  options = [],
   placeholder,
   error,
-  value,
+  value = [],
 }) => {
   return (
     <section className={styles.card}>

@@ -7,12 +7,12 @@ export const CustomerRuleInput = ({
   onDelete,
   onOperatorChange,
   onValueChange,
-  operatorOptions,
+  operatorOptions = [],
   operatorValue,
   placeholder,
   prefix,
   error,
-  value,
+  value = "",
 }) => {
   return (
     <section className={styles.card}>
