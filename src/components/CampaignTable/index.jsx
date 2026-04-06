@@ -44,7 +44,7 @@ const STATUS_LABELS = {
   expired: "EXPIRED",
 };
 
-export const CampaignTable = ({ campaigns, onDelete }) => {
+export const CampaignTable = ({ campaigns, onDelete, onEdit }) => {
   return (
     <div className={styles.wrapper}>
       <table className={styles.table}>
@@ -71,7 +71,7 @@ export const CampaignTable = ({ campaigns, onDelete }) => {
                 <td className={styles.metaCell}>{formatEndDate(campaign)}</td>
                 <td>
                   <div className={styles.actions}>
-                    <button className={styles.editButton} type="button">
+                    <button className={styles.editButton} onClick={() => onEdit(campaign.id)} type="button">
                       Edit
                     </button>
                     <button className={styles.deleteButton} onClick={() => onDelete(campaign.id)} type="button">

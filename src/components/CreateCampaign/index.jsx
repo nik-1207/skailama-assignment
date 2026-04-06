@@ -1,60 +1,42 @@
 import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, CircleHelp, Plus, Trash2 } from "lucide-react";
 import { Card } from "../Card";
-import { useCollectionStore } from "../../stores/collection.store";
 import { useCampaignStore } from "../../stores/campaign.store";
+import { useCollectionStore } from "../../stores/collection.store";
 import { useCustomerTagStore } from "../../stores/customerTag.store";
 import { useProductStore } from "../../stores/product.store";
 import { ROUTE_CAMPAIGNS, useRouteStore } from "../../stores/route.store";
 import { useShopStore } from "../../stores/shop.store";
-import { zodResolver } from "../../utils/zodResolver";
 import { RuleInputRenderer } from "./RuleInputRenderer";
 import { RuleSelectionModal } from "./RuleSelectionModal";
-import { createCampaignRuleDraft, buildCampaignRuleLogic } from "./utils";
-import { createCampaignSchema } from "./schema";
+import { createCampaignRuleDraft, buildCampaignRuleLogic, getInitialValues, resolveCreateCampaign } from "./utils";
 import styles from "./createCampaign.module.scss";
 import { CURRENCY_OPTIONS, TIMEZONE_OPTIONS } from "../utils";
 
-const resolveCreateCampaign = zodResolver(createCampaignSchema);
-
 export const CreateCampaign = () => {
   const activeShop = useShopStore((state) => state.activeShop);
+  const campaigns = useCampaignStore((state) => state.campaigns);
+  const loadCampaigns = useCampaignStore((state) => state.loadCampaigns);
+  const editingCampaignId = useCampaignStore((state) => state.editingCampaignId);
+  const addCampaign = useCampaignStore((state) => state.addCampaign);
+  const saveCampaign = useCampaignStore((state) => state.updateCampaign);
+  const clearEditingCampaignId = useCampaignStore((state) => state.clearEditingCampaignId);
   const collections = useCollectionStore((state) => state.collections);
   const loadCollections = useCollectionStore((state) => state.loadCollections);
   const customerTags = useCustomerTagStore((state) => state.customerTags);
   const loadCustomerTags = useCustomerTagStore((state) => state.loadCustomerTags);
   const products = useProductStore((state) => state.products);
   const loadProducts = useProductStore((state) => state.loadProducts);
-  const addCampaign = useCampaignStore((state) => state.addCampaign);
   const setRoute = useRouteStore((state) => state.setRoute);
-  
+
   const timezone = activeShop?.timezone ?? TIMEZONE_OPTIONS[0];
-  const initialTierId = crypto.randomUUID();
-  const [values, setValues] = useState({
-    storeId: activeShop?.id ?? "",
-    isEnabled: true,
-    campaignName: "",
-    campaignType: "percentage",
-    timezone,
-    campaignSchedule: "scheduled",
-    startDateTime: null,
-    endDateTime: null,
-    deliveryMode: "immediate",
-    deliveryDays: null,
-    expirationMode: "never",
-    expirationDays: null,
-    expiryTime: null,
-    tiers: [
-      {
-        id: initialTierId,
-        name: "Tier 1",
-        cashbackValue: "100",
-        matchType: "and",
-        rules: [],
-      },
-    ],
-  });
-  const [openTierIds, setOpenTierIds] = useState([initialTierId]);
+  const editingCampaign = campaigns.find((campaign) => campaign.id === editingCampaignId) ?? null;
+  const initialValues = useMemo(
+    () => getInitialValues({ activeShop, editingCampaign, timezone }),
+    [activeShop, editingCampaign, timezone],
+  );
+  const [values, setValues] = useState(initialValues);
+  const [openTierIds, setOpenTierIds] = useState(initialValues.tiers.map((tier) => tier.id));
   const [ruleModalTierId, setRuleModalTierId] = useState(null);
   const [errors, setErrors] = useState({});
 
@@ -68,18 +50,17 @@ export const CreateCampaign = () => {
   const clearTierErrors = () => clearError("tiers");
 
   useEffect(() => {
+    loadCampaigns();
     loadCollections();
     loadCustomerTags();
     loadProducts();
-  }, [loadCollections, loadCustomerTags, loadProducts]);
+  }, [loadCampaigns, loadCollections, loadCustomerTags, loadProducts]);
 
   useEffect(() => {
-    setValues((current) => ({
-      ...current,
-      storeId: activeShop?.id ?? "",
-      timezone,
-    }));
-  }, [activeShop, timezone]);
+    setValues(initialValues);
+    setOpenTierIds(initialValues.tiers.map((tier) => tier.id));
+    setErrors({});
+  }, [initialValues]);
 
   const onChange = (event) => {
     const { name, value } = event.target;
@@ -137,7 +118,13 @@ export const CreateCampaign = () => {
       return;
     }
 
-    addCampaign(result.values);
+    if (editingCampaignId) {
+      saveCampaign(editingCampaignId, result.values);
+    } else {
+      addCampaign(result.values);
+    }
+
+    clearEditingCampaignId();
     setRoute(ROUTE_CAMPAIGNS);
   };
 
@@ -666,7 +653,14 @@ export const CreateCampaign = () => {
         </Card>
 
         <div className={styles.actions}>
-          <button className={styles.secondaryButton} onClick={() => setRoute(ROUTE_CAMPAIGNS)} type="button">
+          <button
+            className={styles.secondaryButton}
+            onClick={() => {
+              clearEditingCampaignId();
+              setRoute(ROUTE_CAMPAIGNS);
+            }}
+            type="button"
+          >
             Cancel
           </button>
           <button className={styles.primaryButton} type="submit">

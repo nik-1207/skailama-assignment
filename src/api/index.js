@@ -111,6 +111,13 @@ export const deleteCampaign = (campaignId) => {
   localStorage.setItem("campaigns", JSON.stringify(nextCampaigns));
 };
 
+export const updateCampaign = (campaignId, nextCampaign) => {
+  const nextCampaigns = getCampaigns().map((campaign) =>
+    campaign.id === campaignId ? { ...campaign, ...nextCampaign, id: campaignId } : campaign,
+  );
+  localStorage.setItem("campaigns", JSON.stringify(nextCampaigns));
+};
+
 export const seedCampaigns = (campaigns) => {
   localStorage.setItem(
     "campaigns",

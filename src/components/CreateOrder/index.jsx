@@ -5,13 +5,10 @@ import { MultiSelect } from "../MultiSelect";
 import { useShopStore } from "../../stores/shop.store";
 import { useCustomerStore } from "../../stores/customer.store";
 import { useProductStore } from "../../stores/product.store";
-import { zodResolver } from "../../utils/zodResolver";
-import { createOrderSchema } from "./schema";
 import styles from "./createOrder.module.scss";
 import { ROUTE_HOME, useRouteStore } from "../../stores/route.store";
 import { CURRENCY_OPTIONS } from "../utils";
-
-const resolveCreateOrder = zodResolver(createOrderSchema);
+import { resolveCreateOrder } from "./utils";
 
 export const CreateOrder = () => {
   const activeShop = useShopStore((state) => state.activeShop);

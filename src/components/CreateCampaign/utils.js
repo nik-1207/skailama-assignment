@@ -1,4 +1,66 @@
 import { ShoppingCart, Tag, Users } from "lucide-react";
+import { zodResolver } from "../../utils/zodResolver";
+import { createCampaignSchema } from "./schema";
+
+export const resolveCreateCampaign = zodResolver(createCampaignSchema);
+
+export const getInitialValues = ({ activeShop, editingCampaign, timezone }) => {
+  if (editingCampaign) {
+    return {
+      storeId: editingCampaign.storeId ?? activeShop?.id ?? "",
+      isEnabled: editingCampaign.isEnabled ?? true,
+      campaignName: editingCampaign.campaignName ?? "",
+      campaignType: editingCampaign.campaignType ?? "percentage",
+      timezone: editingCampaign.timezone ?? timezone,
+      campaignSchedule: editingCampaign.campaignSchedule ?? "scheduled",
+      startDateTime: editingCampaign.startDateTime ?? null,
+      endDateTime: editingCampaign.endDateTime ?? null,
+      deliveryMode: editingCampaign.deliveryMode ?? "immediate",
+      deliveryDays: editingCampaign.deliveryDays ?? null,
+      expirationMode: editingCampaign.expirationMode ?? "never",
+      expirationDays: editingCampaign.expirationDays ?? null,
+      expiryTime: editingCampaign.expiryTime ?? null,
+      tiers: editingCampaign.tiers?.length
+        ? editingCampaign.tiers
+        : [
+            {
+              id: crypto.randomUUID(),
+              name: "Tier 1",
+              cashbackValue: "",
+              matchType: "and",
+              rules: [],
+            },
+          ],
+    };
+  }
+
+  const initialTierId = crypto.randomUUID();
+
+  return {
+    storeId: activeShop?.id ?? "",
+    isEnabled: true,
+    campaignName: "",
+    campaignType: "percentage",
+    timezone,
+    campaignSchedule: "scheduled",
+    startDateTime: null,
+    endDateTime: null,
+    deliveryMode: "immediate",
+    deliveryDays: null,
+    expirationMode: "never",
+    expirationDays: null,
+    expiryTime: null,
+    tiers: [
+      {
+        id: initialTierId,
+        name: "Tier 1",
+        cashbackValue: "100",
+        matchType: "and",
+        rules: [],
+      },
+    ],
+  };
+};
 
 export const CAMPAIGN_RULE_GROUPS = [
   {
