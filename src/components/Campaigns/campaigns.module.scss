@@ -1,3 +1,9 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
 .container {
   display: flex;
   align-items: center;
@@ -35,6 +41,10 @@
 }
 
 @media (max-width: 560px) {
+  .page {
+    gap: 18px;
+  }
+
   .container {
     flex-direction: column;
     align-items: stretch;

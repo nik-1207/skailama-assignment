@@ -93,3 +93,32 @@ export const seedCustomerTags = (tags) => {
     ),
   );
 };
+
+export const getCampaigns = () => JSON.parse(localStorage.getItem("campaigns") ?? "[]");
+
+export const createCampaign = (campaign) => {
+  const nextCampaign = {
+    ...campaign,
+    id: crypto.randomUUID(),
+  };
+  const items = getCampaigns();
+  localStorage.setItem("campaigns", JSON.stringify([...items, nextCampaign]));
+  return nextCampaign;
+};
+
+export const deleteCampaign = (campaignId) => {
+  const nextCampaigns = getCampaigns().filter((campaign) => campaign.id !== campaignId);
+  localStorage.setItem("campaigns", JSON.stringify(nextCampaigns));
+};
+
+export const seedCampaigns = (campaigns) => {
+  localStorage.setItem(
+    "campaigns",
+    JSON.stringify(
+      campaigns.map((campaign) => ({
+        ...campaign,
+        id: campaign.id ?? crypto.randomUUID(),
+      })),
+    ),
+  );
+};

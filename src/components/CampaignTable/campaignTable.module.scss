@@ -1,0 +1,100 @@
+.wrapper {
+  overflow-x: auto;
+  border: 1px solid rgba(226, 232, 240, 1);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 22px 24px;
+  text-align: left;
+}
+
+.table th {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: rgba(100, 116, 139, 1);
+  background: rgba(248, 250, 252, 1);
+}
+
+.table td {
+  border-top: 1px solid rgba(226, 232, 240, 1);
+  font-size: 1rem;
+  color: rgba(15, 23, 42, 1);
+}
+
+.nameCell {
+  font-weight: 700;
+}
+
+.metaCell {
+  color: rgba(100, 116, 139, 1);
+}
+
+.actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.editButton,
+.deleteButton {
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.editButton {
+  color: rgba(59, 130, 246, 1);
+}
+
+.deleteButton {
+  color: rgba(239, 68, 68, 1);
+}
+
+.status-active,
+.status-disabled,
+.status-expired {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 82px;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.status-active {
+  background: rgba(220, 252, 231, 1);
+  color: rgba(22, 101, 52, 1);
+}
+
+.status-expired {
+  background: rgba(254, 249, 195, 1);
+  color: rgba(161, 98, 7, 1);
+}
+
+.status-disabled {
+  background: rgba(254, 226, 226, 1);
+  color: rgba(185, 28, 28, 1);
+}
+
+@media (max-width: 900px) {
+  .table {
+    min-width: 860px;
+  }
+}

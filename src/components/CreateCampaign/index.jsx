@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, CircleHelp, Plus, Trash2 } from "lucide-react";
 import { Card } from "../Card";
 import { useCollectionStore } from "../../stores/collection.store";
+import { useCampaignStore } from "../../stores/campaign.store";
 import { useCustomerTagStore } from "../../stores/customerTag.store";
 import { useProductStore } from "../../stores/product.store";
 import { ROUTE_CAMPAIGNS, useRouteStore } from "../../stores/route.store";
@@ -24,6 +25,7 @@ export const CreateCampaign = () => {
   const loadCustomerTags = useCustomerTagStore((state) => state.loadCustomerTags);
   const products = useProductStore((state) => state.products);
   const loadProducts = useProductStore((state) => state.loadProducts);
+  const addCampaign = useCampaignStore((state) => state.addCampaign);
   const setRoute = useRouteStore((state) => state.setRoute);
   
   const timezone = activeShop?.timezone ?? TIMEZONE_OPTIONS[0];
@@ -130,6 +132,13 @@ export const CreateCampaign = () => {
     event.preventDefault();
     const result = resolveCreateCampaign(values);
     setErrors(result.errors);
+
+    if (!result.values) {
+      return;
+    }
+
+    addCampaign(result.values);
+    setRoute(ROUTE_CAMPAIGNS);
   };
 
   const isScheduled = values.campaignSchedule === "scheduled";
