@@ -5,12 +5,12 @@ import { useCollectionStore } from "../../stores/collection.store";
 import { useCustomerTagStore } from "../../stores/customerTag.store";
 import { useProductStore } from "../../stores/product.store";
 import { useShopStore } from "../../stores/shop.store";
+import { zodResolver } from "../../utils/zodResolver";
 import { RuleInputRenderer } from "./RuleInputRenderer";
 import { RuleSelectionModal } from "./RuleSelectionModal";
 import { createCampaignRuleDraft, buildCampaignRuleLogic } from "./utils";
 import { createCampaignSchema } from "./schema";
 import styles from "./createCampaign.module.scss";
-import { zodResolver } from "../CreateOrder/zodResolver";
 import { CURRENCY_OPTIONS, TIMEZONE_OPTIONS } from "../utils";
 
 const resolveCreateCampaign = zodResolver(createCampaignSchema);
@@ -55,6 +55,13 @@ export const CreateCampaign = () => {
   const [errors, setErrors] = useState({});
 
   const getError = (path) => errors[path];
+  const clearError = (path) => {
+    setErrors((current) => ({
+      ...current,
+      [path]: undefined,
+    }));
+  };
+  const clearTierErrors = () => clearError("tiers");
 
   useEffect(() => {
     loadCollections();
@@ -75,12 +82,9 @@ export const CreateCampaign = () => {
 
     setValues((current) => {
       if (name === "campaignSchedule") {
-        setErrors((current) => ({
-          ...current,
-          campaignSchedule: undefined,
-          startDateTime: undefined,
-          endDateTime: undefined,
-        }));
+        clearError("campaignSchedule");
+        clearError("startDateTime");
+        clearError("endDateTime");
         return {
           ...current,
           campaignSchedule: value,
@@ -90,11 +94,8 @@ export const CreateCampaign = () => {
       }
 
       if (name === "deliveryMode") {
-        setErrors((current) => ({
-          ...current,
-          deliveryMode: undefined,
-          deliveryDays: undefined,
-        }));
+        clearError("deliveryMode");
+        clearError("deliveryDays");
         return {
           ...current,
           deliveryMode: value,
@@ -103,12 +104,9 @@ export const CreateCampaign = () => {
       }
 
       if (name === "expirationMode") {
-        setErrors((current) => ({
-          ...current,
-          expirationMode: undefined,
-          expirationDays: undefined,
-          expiryTime: undefined,
-        }));
+        clearError("expirationMode");
+        clearError("expirationDays");
+        clearError("expiryTime");
         return {
           ...current,
           expirationMode: value,
@@ -117,10 +115,7 @@ export const CreateCampaign = () => {
         };
       }
 
-      setErrors((current) => ({
-        ...current,
-        [name]: undefined,
-      }));
+      clearError(name);
 
       return {
         ...current,
@@ -161,19 +156,13 @@ export const CreateCampaign = () => {
         },
       ],
     }));
-    setErrors((current) => ({
-      ...current,
-      tiers: undefined,
-    }));
+    clearTierErrors();
 
     setOpenTierIds((current) => [...current, nextTierId]);
   };
 
   const updateTier = (tierId, key, value) => {
-    setErrors((current) => ({
-      ...current,
-      tiers: undefined,
-    }));
+    clearTierErrors();
     setValues((current) => ({
       ...current,
       tiers: current.tiers.map((tier) => (tier.id === tierId ? { ...tier, [key]: value } : tier)),
@@ -181,10 +170,7 @@ export const CreateCampaign = () => {
   };
 
   const deleteTier = (tierId) => {
-    setErrors((current) => ({
-      ...current,
-      tiers: undefined,
-    }));
+    clearTierErrors();
     setValues((current) => ({
       ...current,
       tiers: current.tiers.filter((tier) => tier.id !== tierId),
@@ -193,10 +179,7 @@ export const CreateCampaign = () => {
   };
 
   const updateRule = (tierId, ruleId, key, value) => {
-    setErrors((current) => ({
-      ...current,
-      tiers: undefined,
-    }));
+    clearTierErrors();
     setValues((current) => ({
       ...current,
       tiers: current.tiers.map((tier) =>
@@ -222,10 +205,7 @@ export const CreateCampaign = () => {
   };
 
   const deleteRule = (tierId, ruleId) => {
-    setErrors((current) => ({
-      ...current,
-      tiers: undefined,
-    }));
+    clearTierErrors();
     setValues((current) => ({
       ...current,
       tiers: current.tiers.map((tier) =>
@@ -339,10 +319,7 @@ export const CreateCampaign = () => {
           : tier,
       ),
     }));
-    setErrors((current) => ({
-      ...current,
-      tiers: undefined,
-    }));
+    clearTierErrors();
 
     setRuleModalTierId(null);
   };
