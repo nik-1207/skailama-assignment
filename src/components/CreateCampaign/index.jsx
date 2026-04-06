@@ -8,8 +8,12 @@ import { useShopStore } from "../../stores/shop.store";
 import { RuleInputRenderer } from "./RuleInputRenderer";
 import { RuleSelectionModal } from "./RuleSelectionModal";
 import { createCampaignRuleDraft, buildCampaignRuleLogic } from "./utils";
+import { createCampaignSchema } from "./schema";
 import styles from "./createCampaign.module.scss";
+import { zodResolver } from "../CreateOrder/zodResolver";
 import { CURRENCY_OPTIONS, TIMEZONE_OPTIONS } from "../utils";
+
+const resolveCreateCampaign = zodResolver(createCampaignSchema);
 
 export const CreateCampaign = () => {
   const activeShop = useShopStore((state) => state.activeShop);
@@ -24,6 +28,7 @@ export const CreateCampaign = () => {
   const initialTierId = crypto.randomUUID();
   const [values, setValues] = useState({
     storeId: activeShop?.id ?? "",
+    isEnabled: true,
     campaignName: "",
     campaignType: "percentage",
     timezone,
@@ -47,6 +52,9 @@ export const CreateCampaign = () => {
   });
   const [openTierIds, setOpenTierIds] = useState([initialTierId]);
   const [ruleModalTierId, setRuleModalTierId] = useState(null);
+  const [errors, setErrors] = useState({});
+
+  const getError = (path) => errors[path];
 
   useEffect(() => {
     loadCollections();
@@ -67,6 +75,12 @@ export const CreateCampaign = () => {
 
     setValues((current) => {
       if (name === "campaignSchedule") {
+        setErrors((current) => ({
+          ...current,
+          campaignSchedule: undefined,
+          startDateTime: undefined,
+          endDateTime: undefined,
+        }));
         return {
           ...current,
           campaignSchedule: value,
@@ -76,6 +90,11 @@ export const CreateCampaign = () => {
       }
 
       if (name === "deliveryMode") {
+        setErrors((current) => ({
+          ...current,
+          deliveryMode: undefined,
+          deliveryDays: undefined,
+        }));
         return {
           ...current,
           deliveryMode: value,
@@ -84,6 +103,12 @@ export const CreateCampaign = () => {
       }
 
       if (name === "expirationMode") {
+        setErrors((current) => ({
+          ...current,
+          expirationMode: undefined,
+          expirationDays: undefined,
+          expiryTime: undefined,
+        }));
         return {
           ...current,
           expirationMode: value,
@@ -91,6 +116,11 @@ export const CreateCampaign = () => {
           expiryTime: value === "after-specified-days" ? current.expiryTime ?? "10:00" : null,
         };
       }
+
+      setErrors((current) => ({
+        ...current,
+        [name]: undefined,
+      }));
 
       return {
         ...current,
@@ -101,6 +131,8 @@ export const CreateCampaign = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
+    const result = resolveCreateCampaign(values);
+    setErrors(result.errors);
   };
 
   const isScheduled = values.campaignSchedule === "scheduled";
@@ -129,11 +161,19 @@ export const CreateCampaign = () => {
         },
       ],
     }));
+    setErrors((current) => ({
+      ...current,
+      tiers: undefined,
+    }));
 
     setOpenTierIds((current) => [...current, nextTierId]);
   };
 
   const updateTier = (tierId, key, value) => {
+    setErrors((current) => ({
+      ...current,
+      tiers: undefined,
+    }));
     setValues((current) => ({
       ...current,
       tiers: current.tiers.map((tier) => (tier.id === tierId ? { ...tier, [key]: value } : tier)),
@@ -141,6 +181,10 @@ export const CreateCampaign = () => {
   };
 
   const deleteTier = (tierId) => {
+    setErrors((current) => ({
+      ...current,
+      tiers: undefined,
+    }));
     setValues((current) => ({
       ...current,
       tiers: current.tiers.filter((tier) => tier.id !== tierId),
@@ -149,6 +193,10 @@ export const CreateCampaign = () => {
   };
 
   const updateRule = (tierId, ruleId, key, value) => {
+    setErrors((current) => ({
+      ...current,
+      tiers: undefined,
+    }));
     setValues((current) => ({
       ...current,
       tiers: current.tiers.map((tier) =>
@@ -174,6 +222,10 @@ export const CreateCampaign = () => {
   };
 
   const deleteRule = (tierId, ruleId) => {
+    setErrors((current) => ({
+      ...current,
+      tiers: undefined,
+    }));
     setValues((current) => ({
       ...current,
       tiers: current.tiers.map((tier) =>
@@ -287,6 +339,10 @@ export const CreateCampaign = () => {
           : tier,
       ),
     }));
+    setErrors((current) => ({
+      ...current,
+      tiers: undefined,
+    }));
 
     setRuleModalTierId(null);
   };
@@ -294,6 +350,23 @@ export const CreateCampaign = () => {
   return (
     <>
       <form className={styles.container} onSubmit={onSubmit}>
+        <Card className={styles.card}>
+          <div className={styles.statusRow}>
+            <div className={styles.statusContent}>
+              <h1 className={styles.statusTitle}>Campaign Status</h1>
+              <span className={styles.statusText}>{values.isEnabled ? "Enabled" : "Disabled"}</span>
+            </div>
+
+            <button
+              className={values.isEnabled ? styles.statusToggleActive : styles.statusToggle}
+              onClick={() => setValues((current) => ({ ...current, isEnabled: !current.isEnabled }))}
+              type="button"
+            >
+              <span className={styles.statusThumb} />
+            </button>
+          </div>
+        </Card>
+
         <Card className={styles.card}>
           <h1 className={styles.title}>Core Details</h1>
           <div className={styles.form}>
@@ -306,6 +379,7 @@ export const CreateCampaign = () => {
                 type="text"
                 value={values.campaignName}
               />
+              {errors.campaignName ? <p className={styles.error}>{errors.campaignName}</p> : null}
             </div>
 
             <div className={styles.field}>
@@ -314,6 +388,7 @@ export const CreateCampaign = () => {
                 <option value="percentage">Percentage</option>
                 <option value="number">Number</option>
               </select>
+              {errors.campaignType ? <p className={styles.error}>{errors.campaignType}</p> : null}
             </div>
 
             <div className={`${styles.field} ${styles.fullWidth}`}>
@@ -325,6 +400,7 @@ export const CreateCampaign = () => {
                   </option>
                 ))}
               </select>
+              {errors.timezone ? <p className={styles.error}>{errors.timezone}</p> : null}
             </div>
           </div>
         </Card>
@@ -357,6 +433,7 @@ export const CreateCampaign = () => {
                 <span>Run campaign on a schedule</span>
               </label>
             </div>
+            {errors.campaignSchedule ? <p className={styles.error}>{errors.campaignSchedule}</p> : null}
 
             {isScheduled ? (
               <div className={styles.form}>
@@ -369,6 +446,7 @@ export const CreateCampaign = () => {
                     type="datetime-local"
                     value={values.startDateTime ?? ""}
                   />
+                  {errors.startDateTime ? <p className={styles.error}>{errors.startDateTime}</p> : null}
                 </div>
 
                 <div className={styles.field}>
@@ -380,6 +458,7 @@ export const CreateCampaign = () => {
                     type="datetime-local"
                     value={values.endDateTime ?? ""}
                   />
+                  {errors.endDateTime ? <p className={styles.error}>{errors.endDateTime}</p> : null}
                 </div>
               </div>
             ) : null}
@@ -397,6 +476,7 @@ export const CreateCampaign = () => {
                   <option value="immediate">Immediate</option>
                   <option value="after-specified-days">After Specified Days</option>
                 </select>
+                {errors.deliveryMode ? <p className={styles.error}>{errors.deliveryMode}</p> : null}
               </div>
 
               {hasDeliveryDays ? (
@@ -409,6 +489,7 @@ export const CreateCampaign = () => {
                     type="number"
                     value={values.deliveryDays ?? ""}
                   />
+                  {errors.deliveryDays ? <p className={styles.error}>{errors.deliveryDays}</p> : null}
                 </div>
               ) : null}
             </div>
@@ -429,6 +510,7 @@ export const CreateCampaign = () => {
                   <option value="never">Never</option>
                   <option value="after-specified-days">After Specified Days</option>
                 </select>
+                {errors.expirationMode ? <p className={styles.error}>{errors.expirationMode}</p> : null}
               </div>
 
               {hasExpiryDays ? (
@@ -441,6 +523,7 @@ export const CreateCampaign = () => {
                     type="number"
                     value={values.expirationDays ?? ""}
                   />
+                  {errors.expirationDays ? <p className={styles.error}>{errors.expirationDays}</p> : null}
                 </div>
               ) : null}
 
@@ -454,6 +537,7 @@ export const CreateCampaign = () => {
                     type="time"
                     value={values.expiryTime ?? ""}
                   />
+                  {errors.expiryTime ? <p className={styles.error}>{errors.expiryTime}</p> : null}
                 </div>
               ) : null}
             </div>
@@ -474,7 +558,7 @@ export const CreateCampaign = () => {
           </div>
 
           <div className={styles.tiers}>
-            {values.tiers.map((tier) => (
+            {values.tiers.map((tier, tierIndex) => (
               <section className={styles.tierCard} key={tier.id}>
                 <div className={styles.tierHeader}>
                   <button className={styles.tierToggle} onClick={() => toggleTier(tier.id)} type="button">
@@ -524,10 +608,11 @@ export const CreateCampaign = () => {
                         <span>Add rule</span>
                       </button>
                     </div>
+                    {tierIndex === 0 && errors.tiers ? <p className={styles.error}>{errors.tiers}</p> : null}
 
                     {tier.rules?.length ? (
                       <div className={styles.ruleList}>
-                        {tier.rules.map((rule) => (
+                        {tier.rules.map((rule, ruleIndex) => (
                           <RuleInputRenderer
                             key={rule.id}
                             currencyOptions={currencyOptions}
@@ -542,6 +627,11 @@ export const CreateCampaign = () => {
                               )
                             }
                             rule={rule}
+                            ruleError={
+                              getError(`tiers.${tierIndex}.rules.${ruleIndex}.logic`) ||
+                              getError(`tiers.${tierIndex}.rules.${ruleIndex}.value`) ||
+                              getError(`tiers.${tierIndex}.rules.${ruleIndex}`)
+                            }
                             productCollectionOptions={productCollectionOptions}
                             productOptions={productOptions}
                             productTagOptions={productTagOptions}
@@ -572,6 +662,9 @@ export const CreateCampaign = () => {
                           <span className={styles.valueAffix}>{cashbackUnit}</span>
                         ) : null}
                       </div>
+                      {getError(`tiers.${tierIndex}.cashbackValue`) ? (
+                        <p className={styles.error}>{getError(`tiers.${tierIndex}.cashbackValue`)}</p>
+                      ) : null}
                     </div>
                   </div>
                 ) : null}

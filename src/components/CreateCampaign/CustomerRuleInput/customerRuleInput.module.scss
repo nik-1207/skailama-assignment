@@ -95,6 +95,12 @@
   outline: none;
 }
 
+.error {
+  margin: -4px 0 0;
+  font-size: 0.875rem;
+  color: rgba(239, 68, 68, 1);
+}
+
 @media (max-width: 720px) {
   .controls {
     grid-template-columns: 1fr;

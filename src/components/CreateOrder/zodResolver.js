@@ -9,10 +9,17 @@ export const zodResolver = (schema) => (values) => {
   }
 
   const errors = result.error.issues.reduce((accumulator, issue) => {
-    const path = issue.path[0];
+    const topLevelPath = issue.path[0];
+    const fullPath = issue.path
+      .map((segment) => (typeof segment === "number" ? String(segment) : segment))
+      .join(".");
 
-    if (typeof path === "string" && !accumulator[path]) {
-      accumulator[path] = issue.message;
+    if (fullPath && !accumulator[fullPath]) {
+      accumulator[fullPath] = issue.message;
+    }
+
+    if (typeof topLevelPath === "string" && !accumulator[topLevelPath]) {
+      accumulator[topLevelPath] = issue.message;
     }
 
     return accumulator;

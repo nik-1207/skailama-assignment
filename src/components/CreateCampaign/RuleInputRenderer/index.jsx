@@ -11,6 +11,7 @@ export const RuleInputRenderer = ({
   productTagOptions,
   productTypeOptions,
   rule,
+  ruleError,
   tagOptions,
   variantOptions,
 }) => {
@@ -26,6 +27,7 @@ export const RuleInputRenderer = ({
           operatorValue={rule.operator}
           options={tagOptions}
           placeholder={rule.placeholder}
+          error={ruleError}
           value={rule.value}
         />
       );
@@ -41,6 +43,7 @@ export const RuleInputRenderer = ({
           operatorValue={rule.operator}
           placeholder={rule.placeholder}
           prefix="$"
+          error={ruleError}
           value={rule.value}
         />
       );
@@ -55,6 +58,7 @@ export const RuleInputRenderer = ({
           operatorOptions={rule.operatorOptions}
           operatorValue={rule.operator}
           placeholder={rule.placeholder}
+          error={ruleError}
           value={rule.value}
         />
       );
@@ -70,6 +74,7 @@ export const RuleInputRenderer = ({
           operatorValue={rule.operator}
           placeholder={rule.placeholder}
           prefix="$"
+          error={ruleError}
           value={rule.value}
         />
       );
@@ -84,6 +89,7 @@ export const RuleInputRenderer = ({
           operatorValue={rule.operator}
           options={currencyOptions}
           placeholder={rule.placeholder}
+          error={ruleError}
           value={rule.value}
         />
       );
@@ -98,6 +104,7 @@ export const RuleInputRenderer = ({
           operatorValue={rule.operator}
           options={productTagOptions}
           placeholder={rule.placeholder}
+          error={ruleError}
           value={rule.value}
         />
       );
@@ -112,6 +119,7 @@ export const RuleInputRenderer = ({
           operatorValue={rule.operator}
           options={productOptions}
           placeholder={rule.placeholder}
+          error={ruleError}
           value={rule.value}
         />
       );
@@ -126,6 +134,7 @@ export const RuleInputRenderer = ({
           operatorValue={rule.operator}
           options={variantOptions}
           placeholder={rule.placeholder}
+          error={ruleError}
           value={rule.value}
         />
       );
@@ -140,6 +149,7 @@ export const RuleInputRenderer = ({
           operatorValue={rule.operator}
           options={productCollectionOptions}
           placeholder={rule.placeholder}
+          error={ruleError}
           value={rule.value}
         />
       );
@@ -154,6 +164,7 @@ export const RuleInputRenderer = ({
           operatorValue={rule.operator}
           options={productTypeOptions}
           placeholder={rule.placeholder}
+          error={ruleError}
           value={rule.value}
         />
       );

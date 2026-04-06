@@ -11,6 +11,7 @@ export const MultiValueRuleInput = ({
   operatorValue,
   options,
   placeholder,
+  error,
   value,
 }) => {
   return (
@@ -33,6 +34,8 @@ export const MultiValueRuleInput = ({
 
         <MultiSelect data={options} onChange={onValueChange} placeholder={placeholder} value={value} />
       </div>
+
+      {error ? <p className={styles.error}>{error}</p> : null}
     </section>
   );
 };

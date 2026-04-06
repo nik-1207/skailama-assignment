@@ -11,6 +11,7 @@ export const CustomerRuleInput = ({
   operatorValue,
   placeholder,
   prefix,
+  error,
   value,
 }) => {
   return (
@@ -42,6 +43,8 @@ export const CustomerRuleInput = ({
           />
         </div>
       </div>
+
+      {error ? <p className={styles.error}>{error}</p> : null}
     </section>
   );
 };

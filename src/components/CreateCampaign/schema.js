@@ -33,6 +33,7 @@ const campaignTierSchema = z.object({
 export const createCampaignSchema = z
   .object({
     storeId: z.uuid("Store ID is required"),
+    isEnabled: z.boolean(),
     campaignName: z.string().trim().min(1, "Campaign name is required"),
     campaignType: z.enum(["percentage", "number"]),
     timezone: z.string().trim().min(1, "Campaign timezone is required"),
