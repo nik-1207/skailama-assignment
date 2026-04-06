@@ -2,6 +2,17 @@ import { z } from "zod/v4";
 
 const ruleTypeSchema = z.enum(["product-rule", "cart-rule", "customer-rule"]);
 const tierMatchTypeSchema = z.enum(["and", "or"]);
+const ruleOperatorSchema = z.enum(["is", "is-not", ">=", "<=", "="]);
+const multiValueRuleFields = [
+  "customer-tags",
+  "cart-currency",
+  "specific-products",
+  "specific-variants",
+  "specific-collection",
+  "product-tags",
+  "product-types",
+];
+const numericRuleFields = ["customer-spent", "cart-quantity", "cart-total"];
 
 const jsonLogicPrimitiveSchema = z.union([z.string(), z.number(), z.boolean(), z.null()]);
 
@@ -17,9 +28,40 @@ const campaignRuleSchema = z.object({
   id: z.uuid("Rule ID is required"),
   type: ruleTypeSchema,
   field: z.string().trim().min(1, "Rule field is required"),
+  operator: ruleOperatorSchema,
+  value: z.union([z.string(), z.array(z.string())]),
   logic: z
     .record(z.string(), jsonLogicSchema)
     .refine((value) => Object.keys(value).length > 0, "Rule logic is required"),
+}).superRefine((rule, context) => {
+  if (multiValueRuleFields.includes(rule.field)) {
+    if (!Array.isArray(rule.value) || rule.value.length === 0) {
+      context.addIssue({
+        code: "custom",
+        path: ["value"],
+        message: "Select at least one value",
+      });
+    }
+  }
+
+  if (numericRuleFields.includes(rule.field)) {
+    if (typeof rule.value !== "string" || !rule.value.trim()) {
+      context.addIssue({
+        code: "custom",
+        path: ["value"],
+        message: "Value is required",
+      });
+      return;
+    }
+
+    if (Number.isNaN(Number(rule.value))) {
+      context.addIssue({
+        code: "custom",
+        path: ["value"],
+        message: "Value must be a number",
+      });
+    }
+  }
 });
 
 const campaignTierSchema = z.object({
@@ -27,7 +69,7 @@ const campaignTierSchema = z.object({
   name: z.string().trim().min(1, "Tier name is required"),
   cashbackValue: z.string().trim().min(1, "Cashback value is required"),
   matchType: tierMatchTypeSchema,
-  rules: z.array(campaignRuleSchema),
+  rules: z.array(campaignRuleSchema).min(1, "At least one rule is required"),
 });
 
 export const createCampaignSchema = z

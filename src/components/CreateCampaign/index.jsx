@@ -4,6 +4,7 @@ import { Card } from "../Card";
 import { useCollectionStore } from "../../stores/collection.store";
 import { useCustomerTagStore } from "../../stores/customerTag.store";
 import { useProductStore } from "../../stores/product.store";
+import { ROUTE_CAMPAIGNS, useRouteStore } from "../../stores/route.store";
 import { useShopStore } from "../../stores/shop.store";
 import { zodResolver } from "../../utils/zodResolver";
 import { RuleInputRenderer } from "./RuleInputRenderer";
@@ -23,6 +24,7 @@ export const CreateCampaign = () => {
   const loadCustomerTags = useCustomerTagStore((state) => state.loadCustomerTags);
   const products = useProductStore((state) => state.products);
   const loadProducts = useProductStore((state) => state.loadProducts);
+  const setRoute = useRouteStore((state) => state.setRoute);
   
   const timezone = activeShop?.timezone ?? TIMEZONE_OPTIONS[0];
   const initialTierId = crypto.randomUUID();
@@ -534,6 +536,8 @@ export const CreateCampaign = () => {
             </button>
           </div>
 
+          {errors.tiers ? <p className={styles.error}>{errors.tiers}</p> : null}
+
           <div className={styles.tiers}>
             {values.tiers.map((tier, tierIndex) => (
               <section className={styles.tierCard} key={tier.id}>
@@ -585,7 +589,9 @@ export const CreateCampaign = () => {
                         <span>Add rule</span>
                       </button>
                     </div>
-                    {tierIndex === 0 && errors.tiers ? <p className={styles.error}>{errors.tiers}</p> : null}
+                    {getError(`tiers.${tierIndex}.rules`) ? (
+                      <p className={styles.error}>{getError(`tiers.${tierIndex}.rules`)}</p>
+                    ) : null}
 
                     {tier.rules?.length ? (
                       <div className={styles.ruleList}>
@@ -649,6 +655,15 @@ export const CreateCampaign = () => {
             ))}
           </div>
         </Card>
+
+        <div className={styles.actions}>
+          <button className={styles.secondaryButton} onClick={() => setRoute(ROUTE_CAMPAIGNS)} type="button">
+            Cancel
+          </button>
+          <button className={styles.primaryButton} type="submit">
+            Save
+          </button>
+        </div>
       </form>
 
       <RuleSelectionModal onClose={closeRuleModal} onSelectRule={addRuleToTier} open={Boolean(ruleModalTierId)} />

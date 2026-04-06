@@ -16,7 +16,7 @@ export const zodResolver = (schema) => (values) => {
 
     const topLevelPath = issue.path[0];
 
-    if (topLevelPath && !errors[topLevelPath]) {
+    if (issue.path.length === 1 && topLevelPath && !errors[topLevelPath]) {
       errors[topLevelPath] = issue.message;
     }
   });
