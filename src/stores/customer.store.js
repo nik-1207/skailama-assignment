@@ -3,5 +3,8 @@ import { getUsers } from "../api";
 
 export const useCustomerStore = create((set) => ({
   customers: [],
-  loadCustomers: () => set({ customers: getUsers() }),
+  loadCustomers: async () => {
+    const customers = await getUsers();
+    set({ customers:customers.data });
+  },
 }));

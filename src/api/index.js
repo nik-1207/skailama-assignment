@@ -41,7 +41,15 @@ export const createUser = ({ email, firstName, lastName }) => {
   return user;
 };
 
-export const getUsers = () => JSON.parse(localStorage.getItem("users") ?? "[]");
+export const getUsers = async () => {
+  const response = await fetch(`${API_BASE_URL}/users`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch users: ${response.status}`);
+  }
+
+  return response.json();
+};
 
 export const seedUsers = (users) => {
   localStorage.setItem(

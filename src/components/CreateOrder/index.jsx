@@ -19,7 +19,7 @@ export const CreateOrder = () => {
   const setRoute = useRouteStore((state) => state.setRoute);
 
   const [values, setValues] = useState({
-    storeId: activeShop?.id ?? "",
+    storeId: activeShop?._id ?? "",
     customerId: "",
     orderAmount: "",
     orderCreatedAt: "",
@@ -36,7 +36,7 @@ export const CreateOrder = () => {
   useEffect(() => {
     setValues((current) => ({
       ...current,
-      storeId: activeShop?.id ?? "",
+      storeId: activeShop?._id ?? "",
     }));
   }, [activeShop]);
 
@@ -108,7 +108,7 @@ export const CreateOrder = () => {
                 Select customer
               </option>
               {customers.map((customer) => (
-                <option key={customer.id} value={customer.id}>
+                <option key={customer._id} value={customer._id}>
                   {customer.firstName} {customer.lastName}
                 </option>
               ))}
