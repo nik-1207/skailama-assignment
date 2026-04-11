@@ -2,30 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useCustomerStore } from "../../stores/customer.store";
 import styles from "./customers.module.scss";
 
-const CUSTOMER_SUMMARY_PRESETS = [
-  { cashbackBalance: 15.5, lastUpdated: "2025-10-15T15:30:00" },
-  { cashbackBalance: 0, lastUpdated: "2025-10-12T20:00:00" },
-  { cashbackBalance: 125, lastUpdated: "2025-10-16T14:45:00" },
-  { cashbackBalance: 42.75, lastUpdated: "2025-10-14T11:15:00" },
-];
-
-const formatCurrency = (value) =>
-  value.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  });
-
-const formatDateTime = (value) =>
-  new Date(value).toLocaleString("en-US", {
-    month: "numeric",
-    day: "numeric",
-    year: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: true,
-  });
+const EMPTY_VALUE = "-";
 
 export const Customers = () => {
   const customers = useCustomerStore((state) => state.customers);
@@ -37,17 +14,13 @@ export const Customers = () => {
 
   const customerRows = useMemo(
     () =>
-      customers.map((customer, index) => {
-        const summary = CUSTOMER_SUMMARY_PRESETS[index % CUSTOMER_SUMMARY_PRESETS.length];
-
-        return {
-          id: customer.id,
-          firstName: customer.firstName,
-          email: customer.email,
-          cashbackBalance: formatCurrency(summary.cashbackBalance),
-          lastUpdated: formatDateTime(summary.lastUpdated),
-        };
-      }),
+      customers.map((customer) => ({
+        id: customer._id,
+        firstName: customer.firstName,
+        email: customer.email,
+        cashbackBalance: customer.cashbackBalance ?? EMPTY_VALUE,
+        lastUpdated: customer.lastUpdated ?? EMPTY_VALUE,
+      })),
     [customers],
   );
 
