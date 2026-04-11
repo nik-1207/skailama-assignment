@@ -3,5 +3,8 @@ import { getProducts } from "../api";
 
 export const useProductStore = create((set) => ({
   products: [],
-  loadProducts: () => set({ products: getProducts() }),
+  loadProducts: async () => {
+    const products = await getProducts();
+    set({ products: products.data });
+  },
 }));

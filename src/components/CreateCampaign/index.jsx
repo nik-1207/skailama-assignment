@@ -243,7 +243,7 @@ export const CreateCampaign = () => {
         new Map(
           products
             .flatMap((product) => product.tags ?? [])
-            .map((tag) => [tag.id, { value: tag.id, label: tag.name }]),
+            .map((tag) => [tag._id, { value: tag._id, label: tag.name }]),
         ).values(),
       ),
     [products],
@@ -252,7 +252,7 @@ export const CreateCampaign = () => {
   const productOptions = useMemo(
     () =>
       Array.from(
-        new Map(products.map((product) => [product.id, { value: product.id, label: product.name }])).values(),
+        new Map(products.map((product) => [product._id, { value: product._id, label: product.name }])).values(),
       ),
     [products],
   );
@@ -263,7 +263,7 @@ export const CreateCampaign = () => {
         new Map(
           products
             .flatMap((product) => product.variants ?? [])
-            .map((variant) => [variant.id, { value: variant.id, label: variant.name }]),
+            .map((variant) => [variant._id, { value: variant._id, label: variant.name }]),
         ).values(),
       ),
     [products],
@@ -288,7 +288,7 @@ export const CreateCampaign = () => {
           products
             .map((product) => product.productType)
             .filter(Boolean)
-            .map((productType) => [productType.id, { value: productType.id, label: productType.name }]),
+            .map((productType) => [productType._id, { value: productType._id, label: productType.name }]),
         ).values(),
       ),
     [products],

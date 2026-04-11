@@ -65,7 +65,15 @@ export const seedUsers = (users) => {
   );
 };
 
-export const getProducts = () => JSON.parse(localStorage.getItem("products") ?? "[]");
+export const getProducts = async () => {
+  const response = await fetch(`${API_BASE_URL}/products`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch products: ${response.status}`);
+  }
+
+  return response.json();
+};
 
 export const seedProducts = (products) => {
   localStorage.setItem(

@@ -125,9 +125,9 @@ export const CreateOrder = () => {
 
           <div className={styles.lines}>
             {values.lines.map((line, index) => {
-              const selectedProduct = products.find((product) => product.id === line.productId);
+              const selectedProduct = products.find((product) => product._id === line.productId);
               const variantOptions = (selectedProduct?.variants ?? []).map((variant) => ({
-                value: variant.id,
+                value: variant._id,
                 label: variant.name,
               }));
 
@@ -142,7 +142,7 @@ export const CreateOrder = () => {
                     <option value="" disabled>
                       Select product                    </option>
                     {products.map((product) => (
-                      <option key={product.id} value={product.id}>
+                      <option key={product._id} value={product._id}>
                         {product.name}
                       </option>
                     ))}
