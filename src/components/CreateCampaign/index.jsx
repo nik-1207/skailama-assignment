@@ -228,8 +228,8 @@ export const CreateCampaign = () => {
   };
 
   const customerTagOptions = customerTags.map((tag) => ({
-    value: tag.id,
-    label: tag.name,
+    value: tag,
+    label: tag,
   }));
 
   const currencyOptions = CURRENCY_OPTIONS.map((currency) => ({

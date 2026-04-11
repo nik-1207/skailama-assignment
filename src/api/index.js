@@ -87,8 +87,15 @@ export const getCollections = async () => {
   return response.json();;
 };
 
-// TODO: migrate from db
-export const getCustomerTags = () => JSON.parse(localStorage.getItem("customerTags") ?? "[]");
+export const getCustomerTags = async () => {
+  const response = await fetch(`${API_BASE_URL}/customer-tags`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch customer tags: ${response.status}`);
+  }
+
+  return response.json();
+};
 
 // TODO: migrate from db
 export const getCampaigns = () => JSON.parse(localStorage.getItem("campaigns") ?? "[]");

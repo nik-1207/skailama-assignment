@@ -3,5 +3,8 @@ import { getCustomerTags } from "../api";
 
 export const useCustomerTagStore = create((set) => ({
   customerTags: [],
-  loadCustomerTags: () => set({ customerTags: getCustomerTags() }),
+  loadCustomerTags: async () => {
+    const customerTags = await getCustomerTags();
+    set({ customerTags: customerTags.data });
+  },
 }));
