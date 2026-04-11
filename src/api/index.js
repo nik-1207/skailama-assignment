@@ -19,7 +19,15 @@ export const createStore = async ({ name, timezone }) => {
   return response.json();
 };
 
-export const getStores = () => JSON.parse(localStorage.getItem("stores") ?? "[]");
+export const getStores = async () => {
+  const response = await fetch(`${API_BASE_URL}/stores`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch stores: ${response.status}`);
+  }
+
+  return response.json();
+};
 
 export const createUser = ({ email, firstName, lastName }) => {
   const user = {
