@@ -5,6 +5,7 @@ import { MultiSelect } from "../MultiSelect";
 import { useShopStore } from "../../stores/shop.store";
 import { useCustomerStore } from "../../stores/customer.store";
 import { useProductStore } from "../../stores/product.store";
+import { createOrder } from "../../api";
 import styles from "./createOrder.module.scss";
 import { ROUTE_HOME, useRouteStore } from "../../stores/route.store";
 import { CURRENCY_OPTIONS } from "../utils";
@@ -27,6 +28,9 @@ export const CreateOrder = () => {
     lines: [],
   });
   const [errors, setErrors] = useState({});
+  const [submitError, setSubmitError] = useState("");
+  const orderAmountLabel = values.orderCurrency ? `Order Amount (${values.orderCurrency})` : "Order Amount";
+  const getError = (path) => errors[path];
 
   useEffect(() => {
     loadCustomers();
@@ -61,12 +65,28 @@ export const CreateOrder = () => {
       ...current,
       [name]: undefined,
     }));
+    setSubmitError("");
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
     const result = resolveCreateOrder(values);
     setErrors(result.errors);
+    setSubmitError("");
+
+    try {
+      await createOrder({
+        ...result.values,
+        lines: result.values.lines.map((line) => ({
+          productId: line.productId,
+          variantId: line.variantIds[0],
+          quantity: Number(line.quantity),
+        })),
+      });
+      setRoute(ROUTE_HOME);
+    } catch (error) {
+      setSubmitError(error?.message ?? "Unable to create order");
+    }
   };
 
   const addLine = () => {
@@ -131,51 +151,55 @@ export const CreateOrder = () => {
                 label: variant.name,
               }));
 
-              return (
-                <div className={styles.lineRow} key={line.id}>
-                  <span className={styles.lineIndex}>{index + 1}.</span>
-                  <select
-                    className={styles.productName}
-                    onChange={(event) => updateLine({ lineId: line.id, key: "productId", value: event.target.value })}
-                    value={line.productId}
-                  >
-                    <option value="" disabled>
-                      Select product                    </option>
-                    {products.map((product) => (
-                      <option key={product._id} value={product._id}>
-                        {product.name}
-                      </option>
-                    ))}
-                  </select>
-                  <MultiSelect
-                    data={variantOptions}
-                    onChange={(next) => updateLine({ lineId: line.id, key: "variantIds", value: next })}
-                    value={line.variantIds}
-                  />
-                  <input
-                    className={styles.quantityInput}
-                    onChange={(event) => updateLine({
-                      lineId: line.id, key: "quantity", value: event.target.value
-                    })}
-                    placeholder="Quantity"
-                    type="number"
-                    value={line.quantity}
-                  />
-                </div>
-              );
-            })}
-          </div>
-
-          <div className={styles.field}>
-            <label htmlFor="orderAmount">Order Amount ($)</label>
-            <input
-              id="orderAmount"
-              name="orderAmount"
-              type="text"
-              value={values.orderAmount}
-              onChange={onChange}
-            />
-            {errors.orderAmount ? <p className={styles.error}>{errors.orderAmount}</p> : null}
+                return (
+                  <div className={styles.lineRow} key={line.id}>
+                    <span className={styles.lineIndex}>{index + 1}.</span>
+                    <div className={styles.lineField}>
+                      <select
+                        className={styles.productName}
+                        onChange={(event) => updateLine({ lineId: line.id, key: "productId", value: event.target.value })}
+                        value={line.productId}
+                      >
+                        <option value="" disabled>
+                          Select product
+                        </option>
+                        {products.map((product) => (
+                          <option key={product._id} value={product._id}>
+                            {product.name}
+                          </option>
+                        ))}
+                      </select>
+                      {getError(`lines.${index}.productId`) ? (
+                        <p className={styles.error}>{getError(`lines.${index}.productId`)}</p>
+                      ) : null}
+                    </div>
+                    <div className={styles.lineField}>
+                      <MultiSelect
+                        data={variantOptions}
+                        onChange={(next) => updateLine({ lineId: line.id, key: "variantIds", value: next })}
+                        value={line.variantIds}
+                      />
+                      {getError(`lines.${index}.variantIds`) ? (
+                        <p className={styles.error}>{getError(`lines.${index}.variantIds`)}</p>
+                      ) : null}
+                    </div>
+                    <div className={styles.lineField}>
+                      <input
+                        className={styles.quantityInput}
+                        onChange={(event) => updateLine({
+                          lineId: line.id, key: "quantity", value: event.target.value
+                        })}
+                        placeholder="Quantity"
+                        type="number"
+                        value={line.quantity}
+                      />
+                      {getError(`lines.${index}.quantity`) ? (
+                        <p className={styles.error}>{getError(`lines.${index}.quantity`)}</p>
+                      ) : null}
+                    </div>
+                  </div>
+                );
+              })}
           </div>
 
           <div className={styles.field}>
@@ -192,6 +216,18 @@ export const CreateOrder = () => {
             </select>
           </div>
 
+          <div className={styles.field}>
+            <label htmlFor="orderAmount">{orderAmountLabel}</label>
+            <input
+              id="orderAmount"
+              name="orderAmount"
+              type="text"
+              value={values.orderAmount}
+              onChange={onChange}
+            />
+            {errors.orderAmount ? <p className={styles.error}>{errors.orderAmount}</p> : null}
+          </div>
+
           <CalendarField
             id="orderCreatedAt"
             name="orderCreatedAt"
@@ -200,6 +236,8 @@ export const CreateOrder = () => {
             onChange={onChange}
             error={errors.orderCreatedAt}
           />
+
+          {submitError ? <p className={styles.error}>{submitError}</p> : null}
 
           <div className={styles.actions}>
             <button className={styles.primaryButton} type="submit">
