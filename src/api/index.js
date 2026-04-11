@@ -51,20 +51,6 @@ export const getUsers = async () => {
   return response.json();
 };
 
-export const seedUsers = (users) => {
-  localStorage.setItem(
-    "users",
-    JSON.stringify(
-      users.map((user) => ({
-        id: crypto.randomUUID(),
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-      })),
-    ),
-  );
-};
-
 export const getProducts = async () => {
   const response = await fetch(`${API_BASE_URL}/products`);
 
@@ -91,61 +77,23 @@ export const createOrder = async (order) => {
   return response.json();
 };
 
-export const seedProducts = (products) => {
-  localStorage.setItem(
-    "products",
-    JSON.stringify(
-      products.map((product) => ({
-        id: product.id,
-        name: product.name,
-        collectionId: product.collectionId ?? null,
-        productType: {
-          id: product.productType.id,
-          name: product.productType.name,
-        },
-        tags: product.tags.map((tag) => ({
-          id: tag.id,
-          name: tag.name,
-        })),
-        variants: product.variants.map((variant) => ({
-          id: variant.id,
-          name: variant.name,
-        })),
-      })),
-    ),
-  );
+export const getCollections = async () => {
+  const response = await fetch(`${API_BASE_URL}/collections`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch collections: ${response.status}`);
+  }
+
+  return response.json();;
 };
 
-export const getCollections = () => JSON.parse(localStorage.getItem("collections") ?? "[]");
-
-export const seedCollections = (collections) => {
-  localStorage.setItem(
-    "collections",
-    JSON.stringify(
-      collections.map((collection) => ({
-        id: collection.id,
-        name: collection.name,
-      })),
-    ),
-  );
-};
-
+// TODO: migrate from db
 export const getCustomerTags = () => JSON.parse(localStorage.getItem("customerTags") ?? "[]");
 
-export const seedCustomerTags = (tags) => {
-  localStorage.setItem(
-    "customerTags",
-    JSON.stringify(
-      tags.map((tag) => ({
-        id: tag.id,
-        name: tag.name,
-      })),
-    ),
-  );
-};
-
+// TODO: migrate from db
 export const getCampaigns = () => JSON.parse(localStorage.getItem("campaigns") ?? "[]");
 
+// TODO: migrate from db
 export const createCampaign = (campaign) => {
   const nextCampaign = {
     ...campaign,
@@ -156,6 +104,7 @@ export const createCampaign = (campaign) => {
   return nextCampaign;
 };
 
+// TODO: migrate from db
 export const deleteCampaign = (campaignId) => {
   const nextCampaigns = getCampaigns().filter((campaign) => campaign.id !== campaignId);
   localStorage.setItem("campaigns", JSON.stringify(nextCampaigns));
@@ -166,16 +115,4 @@ export const updateCampaign = (campaignId, nextCampaign) => {
     campaign.id === campaignId ? { ...campaign, ...nextCampaign, id: campaignId } : campaign,
   );
   localStorage.setItem("campaigns", JSON.stringify(nextCampaigns));
-};
-
-export const seedCampaigns = (campaigns) => {
-  localStorage.setItem(
-    "campaigns",
-    JSON.stringify(
-      campaigns.map((campaign) => ({
-        ...campaign,
-        id: campaign.id ?? crypto.randomUUID(),
-      })),
-    ),
-  );
 };

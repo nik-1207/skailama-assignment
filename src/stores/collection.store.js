@@ -3,5 +3,8 @@ import { getCollections } from "../api";
 
 export const useCollectionStore = create((set) => ({
   collections: [],
-  loadCollections: () => set({ collections: getCollections() }),
+  loadCollections: async () => {
+    const collections = await getCollections();
+    set({ collections: collections.data });
+  },
 }));
