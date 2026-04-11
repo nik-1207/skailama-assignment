@@ -5,33 +5,45 @@ import { useShopStore } from "../../../stores/shop.store";
 import styles from "./createStoreModal.module.scss";
 import { TIMEZONE_OPTIONS } from "../../utils";
 
+const DEFAULT_TIMEZONE = "UTC";
+
 export const CreateStoreModal = () => {
   const close = useModalStore((state) => state.closeModal);
   const isOpen = useModalStore((state) => state.isOpen);
   const addShop = useShopStore((state) => state.addShop);
 
   const [store, setStore] = useState("");
-  const [timezone, setTimezone] = useState();
+  const [timezone, setTimezone] = useState(DEFAULT_TIMEZONE);
+  const [error, setError] = useState("");
 
   const onChange = (event) => {
     setStore(event.target.value);
+    setError("");
   };
 
   const onTimezoneChange = (event) => {
     setTimezone(event.target.value);
+    setError("");
   };
 
   const onCancel = () => {
     setStore("");
-    setTimezone();
+    setTimezone(DEFAULT_TIMEZONE);
+    setError("");
     close();
   };
 
-  const onSave = () => {
+  const onSave = async () => {
     const name = store.trim();
     if (!name) return;
-    addShop({ name, timezone });
-    onCancel();
+    setError("");
+
+    try {
+      await addShop({ name, timezone });
+      onCancel();
+    } catch (nextError) {
+      setError(nextError?.message ?? "Unable to create store");
+    }
   };
 
   return (
@@ -45,6 +57,7 @@ export const CreateStoreModal = () => {
             </option>
           ))}
         </select>
+        {error ? <p className={styles.error}>{error}</p> : null}
       </div>
       <div className={styles.actions}>
         <button className={styles.save} onClick={onSave}>

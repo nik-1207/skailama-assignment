@@ -1,12 +1,22 @@
-export const createStore = ({ name, timezone }) => {
-  const store = {
-    name,
-    id: crypto.randomUUID(),
-    timezone: timezone,
-  };
-  const items = localStorage.getItem("stores");
-  localStorage.setItem("stores", JSON.stringify([...JSON.parse(items ?? "[]"), store]));
-  return store;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+export const createStore = async ({ name, timezone }) => {
+  const response = await fetch(`${API_BASE_URL}/stores`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name,
+      timezone,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to create store: ${response.status}`);
+  }
+
+  return response.json();
 };
 
 export const getStores = () => JSON.parse(localStorage.getItem("stores") ?? "[]");

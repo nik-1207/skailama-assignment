@@ -6,10 +6,11 @@ export const useShopStore = create((set) => ({
   shops: [],
   setActiveShop: (shop) => set({ activeShop: shop }),
   loadShops: () => set({ shops: getStores() }),
-  addShop: ({ name, timezone }) => {
-    const shop = createStore({ name, timezone });
+  addShop: async ({ name, timezone }) => {
+    const shop = await createStore({ name, timezone });
     set((state) => ({
       shops: [...state.shops, shop],
     }));
+    return shop;
   },
 }));
