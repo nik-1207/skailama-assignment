@@ -15,7 +15,7 @@ const orderLineSchema = z.object({
 export const createOrderSchema = z.object({
   storeId: z.string().trim().min(1, "Store ID is required"),
   customerId: z.string().trim().min(1, "Customer ID is required"),
-  orderCurrency: z.string().trim().min(1, "Order currency is required"),
+  currency: z.string().trim().min(1, "Order currency is required"),
   orderAmount: z
     .string()
     .trim()

@@ -204,7 +204,7 @@ export const CreateOrder = () => {
 
           <div className={styles.field}>
             <label htmlFor="orderCurrency">Order Currency</label>
-            <select id="orderCurrency" name="orderCurrency" value={values.orderCurrency} onChange={onChange}>
+            <select id="orderCurrency" name="currency" value={values.orderCurrency} onChange={onChange}>
               <option value="" disabled>
                 Select currency
               </option>
