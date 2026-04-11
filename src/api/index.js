@@ -1,6 +1,6 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const createStore = async ({ name, timezone }) => {
+export const createStore = async ({ name, timezone, currency }) => {
   const response = await fetch(`${API_BASE_URL}/stores`, {
     method: "POST",
     headers: {
@@ -9,6 +9,7 @@ export const createStore = async ({ name, timezone }) => {
     body: JSON.stringify({
       name,
       timezone,
+      currency,
     }),
   });
 

@@ -9,8 +9,8 @@ export const useShopStore = create((set) => ({
     const shops = await getStores();
     set({ shops: shops.data });
   },
-  addShop: async ({ name, timezone }) => {
-    const shop = await createStore({ name, timezone });
+  addShop: async ({ name, timezone, currency }) => {
+    const shop = await createStore({ name, timezone, currency });
     set((state) => ({
       shops: [...state.shops, shop],
     }));
