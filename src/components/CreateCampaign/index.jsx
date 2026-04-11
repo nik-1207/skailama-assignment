@@ -275,7 +275,7 @@ export const CreateCampaign = () => {
         new Map(
           collections
             .filter(Boolean)
-            .map((collection) => [collection.id, { value: collection.id, label: collection.name }]),
+            .map((collection) => [collection._id, { value: collection._id, label: collection.name }]),
         ).values(),
       ),
     [collections],
