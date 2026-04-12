@@ -17,14 +17,15 @@ export const useCampaignStore = create((set) => ({
     }));
     return nextCampaign;
   },
-  updateCampaign: (campaignId, nextCampaign) => {
-    updateCampaign(campaignId, nextCampaign);
+  updateCampaign: async (campaignId, nextCampaign) => {
+    const updatedCampaign = await updateCampaign(campaignId, nextCampaign);
     set((state) => ({
       campaigns: state.campaigns.map((campaign) =>
-        campaign._id === campaignId ? { ...campaign, ...nextCampaign, _id: campaignId } : campaign,
+        campaign._id === campaignId ? updatedCampaign.data : campaign,
       ),
       editingCampaignId: null,
     }));
+    return updatedCampaign;
   },
   removeCampaign: async (campaignId) => {
     await deleteCampaign(campaignId);

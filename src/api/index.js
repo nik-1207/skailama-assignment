@@ -138,9 +138,19 @@ export const deleteCampaign = async (campaignId) => {
   return result.data ?? result;
 };
 
-export const updateCampaign = (campaignId, nextCampaign) => {
-  const nextCampaigns = getCampaigns().map((campaign) =>
-    campaign.id === campaignId ? { ...campaign, ...nextCampaign, id: campaignId } : campaign,
-  );
-  localStorage.setItem("campaigns", JSON.stringify(nextCampaigns));
+export const updateCampaign = async (campaignId, nextCampaign) => {
+  const response = await fetch(`${API_BASE_URL}/campaigns/${campaignId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(nextCampaign),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to update campaign: ${response.status}`);
+  }
+
+  return response.json();
+  ;
 };

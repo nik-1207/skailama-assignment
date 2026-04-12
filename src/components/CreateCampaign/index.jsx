@@ -114,7 +114,6 @@ export const CreateCampaign = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
     const result = resolveCreateCampaign(values);
-    console.log(result)
     setErrors(result.errors);
 
     if (!result.values) {
@@ -125,7 +124,7 @@ export const CreateCampaign = () => {
 
     try {
       if (editingCampaignId) {
-        saveCampaign(editingCampaignId, result.values);
+        await saveCampaign(editingCampaignId, result.values);
       } else {
         await addCampaign(result.values);
       }
