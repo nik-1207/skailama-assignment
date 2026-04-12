@@ -9,7 +9,7 @@ import { ROUTE_CAMPAIGNS, useRouteStore } from "../../stores/route.store";
 import { useShopStore } from "../../stores/shop.store";
 import { RuleInputRenderer } from "./RuleInputRenderer";
 import { RuleSelectionModal } from "./RuleSelectionModal";
-import { createCampaignRuleDraft, buildCampaignRuleLogic, getInitialValues, resolveCreateCampaign } from "./utils";
+import { createCampaignRuleDraft, getInitialValues, resolveCreateCampaign } from "./utils";
 import styles from "./createCampaign.module.scss";
 import { CURRENCY_OPTIONS, TIMEZONE_OPTIONS } from "../utils";
 
@@ -197,12 +197,7 @@ export const CreateCampaign = () => {
                   return rule;
                 }
 
-                const nextRule = { ...rule, [key]: value };
-
-                return {
-                  ...nextRule,
-                  logic: buildCampaignRuleLogic(nextRule),
-                };
+                return { ...rule, [key]: value };
               }),
             }
           : tier,
@@ -615,7 +610,6 @@ export const CreateCampaign = () => {
                             }
                             rule={rule}
                             ruleError={
-                              getError(`tiers.${tierIndex}.rules.${ruleIndex}.logic`) ||
                               getError(`tiers.${tierIndex}.rules.${ruleIndex}.value`) ||
                               getError(`tiers.${tierIndex}.rules.${ruleIndex}`)
                             }

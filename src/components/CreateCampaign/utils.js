@@ -19,19 +19,16 @@ export const hydrateCampaignRule = (rule) => {
     return rule;
   }
 
-  const nextRule = {
-    ...rule,
+  return {
+    id: rule.id,
+    type: rule.type ?? definition.type,
+    field: rule.field,
+    operator: rule.operator ?? definition.defaultOperator,
+    value: rule.value ?? definition.defaultValue,
     label: definition.label,
     placeholder: definition.placeholder,
     inputType: definition.inputType,
-    operator: rule.operator ?? definition.defaultOperator,
     operatorOptions: getOperatorOptions(definition.operatorType),
-    value: rule.value ?? definition.defaultValue,
-  };
-
-  return {
-    ...nextRule,
-    logic: rule.logic ?? buildCampaignRuleLogic(nextRule),
   };
 };
 
@@ -187,7 +184,7 @@ export const RULE_OPERATOR_OPTIONS = {
 
 export const CAMPAIGN_RULE_DEFINITIONS = {
   "customer-tags": {
-    type: "customer-rule",
+    type: "customer",
     label: "Customer Tags",
     placeholder: "Select tags",
     inputType: "multiselect",
@@ -196,7 +193,7 @@ export const CAMPAIGN_RULE_DEFINITIONS = {
     defaultValue: [],
   },
   "customer-spent": {
-    type: "customer-rule",
+    type: "customer",
     label: "Customer Lifetime Spent",
     placeholder: "0",
     inputType: "number",
@@ -205,7 +202,7 @@ export const CAMPAIGN_RULE_DEFINITIONS = {
     defaultValue: "0",
   },
   "cart-quantity": {
-    type: "cart-rule",
+    type: "cart",
     label: "Cart Quantity",
     placeholder: "0",
     inputType: "number",
@@ -214,7 +211,7 @@ export const CAMPAIGN_RULE_DEFINITIONS = {
     defaultValue: "0",
   },
   "cart-total": {
-    type: "cart-rule",
+    type: "cart",
     label: "Cart Total",
     placeholder: "0",
     inputType: "number",
@@ -223,7 +220,7 @@ export const CAMPAIGN_RULE_DEFINITIONS = {
     defaultValue: "0",
   },
   "cart-currency": {
-    type: "cart-rule",
+    type: "cart",
     label: "Cart Currency",
     placeholder: "Select currency",
     inputType: "multiselect",
@@ -232,7 +229,7 @@ export const CAMPAIGN_RULE_DEFINITIONS = {
     defaultValue: [],
   },
   "specific-products": {
-    type: "product-rule",
+    type: "product",
     label: "Specific Products",
     placeholder: "Select products",
     inputType: "multiselect",
@@ -241,7 +238,7 @@ export const CAMPAIGN_RULE_DEFINITIONS = {
     defaultValue: [],
   },
   "specific-variants": {
-    type: "product-rule",
+    type: "product",
     label: "Specific Variants",
     placeholder: "Select variants",
     inputType: "multiselect",
@@ -250,7 +247,7 @@ export const CAMPAIGN_RULE_DEFINITIONS = {
     defaultValue: [],
   },
   "specific-collection": {
-    type: "product-rule",
+    type: "product",
     label: "Specific Collection",
     placeholder: "Select collections",
     inputType: "multiselect",
@@ -259,7 +256,7 @@ export const CAMPAIGN_RULE_DEFINITIONS = {
     defaultValue: [],
   },
   "product-tags": {
-    type: "product-rule",
+    type: "product",
     label: "Product Tags",
     placeholder: "Select product tags",
     inputType: "multiselect",
@@ -268,7 +265,7 @@ export const CAMPAIGN_RULE_DEFINITIONS = {
     defaultValue: [],
   },
   "product-types": {
-    type: "product-rule",
+    type: "product",
     label: "Product Types",
     placeholder: "Select product types",
     inputType: "multiselect",
@@ -276,58 +273,6 @@ export const CAMPAIGN_RULE_DEFINITIONS = {
     defaultOperator: "is",
     defaultValue: [],
   },
-};
-
-const getVarPathByField = (field) => {
-  switch (field) {
-    case "customer-tags":
-      return "customer.tags";
-    case "customer-spent":
-      return "customer.totalSpent";
-    case "cart-quantity":
-      return "cart.quantity";
-    case "cart-total":
-      return "cart.total";
-    case "cart-currency":
-      return "cart.currency";
-    case "specific-products":
-      return "cart.productIds";
-    case "specific-variants":
-      return "cart.variantIds";
-    case "specific-collection":
-      return "cart.collectionIds";
-    case "product-tags":
-      return "cart.productTags";
-    case "product-types":
-      return "cart.productTypes";
-    default:
-      return field;
-  }
-};
-
-export const buildCampaignRuleLogic = ({ field, operator, value }) => {
-  const variable = { var: getVarPathByField(field) };
-
-  switch (operator) {
-    case "is":
-      if (Array.isArray(value)) {
-        return { in: [variable, value] };
-      }
-      return { "==": [variable, value] };
-    case "is-not":
-      if (Array.isArray(value)) {
-        return { "!": [{ in: [variable, value] }] };
-      }
-      return { "!=": [variable, value] };
-    case ">=":
-      return { ">=": [variable, Number(value || 0)] };
-    case "<=":
-      return { "<=": [variable, Number(value || 0)] };
-    case "=":
-      return { "==": [variable, Number(value || 0)] };
-    default:
-      return { "==": [variable, value] };
-  }
 };
 
 export const createCampaignRuleDraft = (field) => {
@@ -348,9 +293,5 @@ export const createCampaignRuleDraft = (field) => {
     operatorOptions: getOperatorOptions(definition.operatorType),
     value: definition.defaultValue,
   };
-
-  return {
-    ...draft,
-    logic: buildCampaignRuleLogic(draft),
-  };
+  return draft;
 };

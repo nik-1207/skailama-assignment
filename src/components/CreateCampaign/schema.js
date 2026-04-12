@@ -1,6 +1,6 @@
 import { z } from "zod/v4";
 
-const ruleTypeSchema = z.enum(["product-rule", "cart-rule", "customer-rule"]);
+const ruleTypeSchema = z.enum(["product", "cart", "customer"]);
 const tierMatchTypeSchema = z.enum(["and", "or"]);
 const ruleOperatorSchema = z.enum(["is", "is-not", ">=", "<=", "="]);
 const multiValueRuleFields = [
@@ -14,25 +14,12 @@ const multiValueRuleFields = [
 ];
 const numericRuleFields = ["customer-spent", "cart-quantity", "cart-total"];
 
-const jsonLogicPrimitiveSchema = z.union([z.string(), z.number(), z.boolean(), z.null()]);
-
-const jsonLogicSchema = z.lazy(() =>
-  z.union([
-    jsonLogicPrimitiveSchema,
-    z.array(jsonLogicSchema),
-    z.record(z.string(), jsonLogicSchema),
-  ]),
-);
-
 const campaignRuleSchema = z.object({
   id: z.uuid("Rule ID is required"),
   type: ruleTypeSchema,
   field: z.string().trim().min(1, "Rule field is required"),
   operator: ruleOperatorSchema,
   value: z.union([z.string(), z.array(z.string())]),
-  logic: z
-    .record(z.string(), jsonLogicSchema)
-    .refine((value) => Object.keys(value).length > 0, "Rule logic is required"),
 }).superRefine((rule, context) => {
   if (multiValueRuleFields.includes(rule.field)) {
     if (!Array.isArray(rule.value) || rule.value.length === 0) {
@@ -175,4 +162,4 @@ export const createCampaignSchema = z
     }
   });
 
-export { campaignRuleSchema, campaignTierSchema, jsonLogicSchema, tierMatchTypeSchema };
+export { campaignRuleSchema, campaignTierSchema, tierMatchTypeSchema };
