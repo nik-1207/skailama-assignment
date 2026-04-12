@@ -39,6 +39,7 @@ export const CreateCampaign = () => {
   const [openTierIds, setOpenTierIds] = useState(initialValues.tiers.map((tier) => tier.id));
   const [ruleModalTierId, setRuleModalTierId] = useState(null);
   const [errors, setErrors] = useState({});
+  const [submitError, setSubmitError] = useState("");
 
   const getError = (path) => errors[path];
   const clearError = (path) => {
@@ -60,6 +61,7 @@ export const CreateCampaign = () => {
     setValues(initialValues);
     setOpenTierIds(initialValues.tiers.map((tier) => tier.id));
     setErrors({});
+    setSubmitError("");
   }, [initialValues]);
 
   const onChange = (event) => {
@@ -109,23 +111,30 @@ export const CreateCampaign = () => {
     });
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
     const result = resolveCreateCampaign(values);
+    console.log(result)
     setErrors(result.errors);
 
     if (!result.values) {
       return;
     }
 
-    if (editingCampaignId) {
-      saveCampaign(editingCampaignId, result.values);
-    } else {
-      addCampaign(result.values);
-    }
+    setSubmitError("");
 
-    clearEditingCampaignId();
-    setRoute(ROUTE_CAMPAIGNS);
+    try {
+      if (editingCampaignId) {
+        saveCampaign(editingCampaignId, result.values);
+      } else {
+        await addCampaign(result.values);
+      }
+
+      clearEditingCampaignId();
+      setRoute(ROUTE_CAMPAIGNS);
+    } catch (error) {
+      setSubmitError(error?.message ?? "Unable to create campaign");
+    }
   };
 
   const isScheduled = values.campaignSchedule === "scheduled";
@@ -651,6 +660,8 @@ export const CreateCampaign = () => {
             ))}
           </div>
         </Card>
+
+        {submitError ? <p className={styles.error}>{submitError}</p> : null}
 
         <div className={styles.actions}>
           <button

@@ -38,7 +38,7 @@ export const hydrateCampaignRule = (rule) => {
 export const getInitialValues = ({ activeShop, editingCampaign, timezone }) => {
   if (editingCampaign) {
     return {
-      storeId: editingCampaign.storeId ?? activeShop?.id ?? "",
+      storeId: editingCampaign.storeId ?? activeShop?._id ?? "",
       isEnabled: editingCampaign.isEnabled ?? true,
       campaignName: editingCampaign.campaignName ?? "",
       campaignType: editingCampaign.campaignType ?? "percentage",
@@ -71,7 +71,7 @@ export const getInitialValues = ({ activeShop, editingCampaign, timezone }) => {
   const initialTierId = crypto.randomUUID();
 
   return {
-    storeId: activeShop?.id ?? "",
+    storeId: activeShop?._id ?? "",
     isEnabled: true,
     campaignName: "",
     campaignType: "percentage",

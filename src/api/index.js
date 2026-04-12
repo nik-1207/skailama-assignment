@@ -101,15 +101,21 @@ export const getCustomerTags = async () => {
 // TODO: migrate from db
 export const getCampaigns = () => JSON.parse(localStorage.getItem("campaigns") ?? "[]");
 
-// TODO: migrate from db
-export const createCampaign = (campaign) => {
-  const nextCampaign = {
-    ...campaign,
-    id: crypto.randomUUID(),
-  };
-  const items = getCampaigns();
-  localStorage.setItem("campaigns", JSON.stringify([...items, nextCampaign]));
-  return nextCampaign;
+export const createCampaign = async (campaign) => {
+  const response = await fetch(`${API_BASE_URL}/campaigns`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(campaign),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to create campaign: ${response.status}`);
+  }
+
+  const result = await response.json();
+  return result.data ?? result;
 };
 
 // TODO: migrate from db

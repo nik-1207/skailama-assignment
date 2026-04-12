@@ -7,8 +7,8 @@ export const useCampaignStore = create((set) => ({
   loadCampaigns: () => set({ campaigns: getCampaigns() }),
   setEditingCampaignId: (campaignId) => set({ editingCampaignId: campaignId }),
   clearEditingCampaignId: () => set({ editingCampaignId: null }),
-  addCampaign: (campaign) => {
-    const nextCampaign = createCampaign(campaign);
+  addCampaign: async (campaign) => {
+    const nextCampaign = await createCampaign(campaign);
     set((state) => ({
       campaigns: [...state.campaigns, nextCampaign],
     }));
