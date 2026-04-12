@@ -23,10 +23,6 @@ const formatEndDate = (campaign) => {
 };
 
 const getCampaignStatus = (campaign) => {
-  if (!campaign.isEnabled) {
-    return "disabled";
-  }
-
   if (campaign.endDateTime) {
     const endDate = new Date(campaign.endDateTime);
 
@@ -62,7 +58,7 @@ export const CampaignTable = ({ campaigns, onDelete, onEdit }) => {
             const status = getCampaignStatus(campaign);
 
             return (
-              <tr key={campaign.id}>
+              <tr key={campaign._id}>
                 <td className={styles.nameCell}>{campaign.campaignName}</td>
                 <td>
                   <span className={styles[`status-${status}`]}>{STATUS_LABELS[status]}</span>
@@ -71,10 +67,10 @@ export const CampaignTable = ({ campaigns, onDelete, onEdit }) => {
                 <td className={styles.metaCell}>{formatEndDate(campaign)}</td>
                 <td>
                   <div className={styles.actions}>
-                    <button className={styles.editButton} onClick={() => onEdit(campaign.id)} type="button">
+                    <button className={styles.editButton} onClick={() => onEdit(campaign._id)} type="button">
                       Edit
                     </button>
-                    <button className={styles.deleteButton} onClick={() => onDelete(campaign.id)} type="button">
+                    <button className={styles.deleteButton} onClick={() => onDelete(campaign._id)} type="button">
                       Delete
                     </button>
                   </div>

@@ -4,7 +4,10 @@ import { createCampaign, deleteCampaign, getCampaigns, updateCampaign } from "..
 export const useCampaignStore = create((set) => ({
   campaigns: [],
   editingCampaignId: null,
-  loadCampaigns: () => set({ campaigns: getCampaigns() }),
+  loadCampaigns: async () => {
+    const campaigns = await getCampaigns();
+    set({ campaigns: campaigns.data });
+  },
   setEditingCampaignId: (campaignId) => set({ editingCampaignId: campaignId }),
   clearEditingCampaignId: () => set({ editingCampaignId: null }),
   addCampaign: async (campaign) => {
@@ -18,7 +21,7 @@ export const useCampaignStore = create((set) => ({
     updateCampaign(campaignId, nextCampaign);
     set((state) => ({
       campaigns: state.campaigns.map((campaign) =>
-        campaign.id === campaignId ? { ...campaign, ...nextCampaign, id: campaignId } : campaign,
+        campaign._id === campaignId ? { ...campaign, ...nextCampaign, _id: campaignId } : campaign,
       ),
       editingCampaignId: null,
     }));
@@ -26,7 +29,7 @@ export const useCampaignStore = create((set) => ({
   removeCampaign: (campaignId) => {
     deleteCampaign(campaignId);
     set((state) => ({
-      campaigns: state.campaigns.filter((campaign) => campaign.id !== campaignId),
+      campaigns: state.campaigns.filter((campaign) => campaign._id !== campaignId),
       editingCampaignId: state.editingCampaignId === campaignId ? null : state.editingCampaignId,
     }));
   },

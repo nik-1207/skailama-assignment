@@ -98,8 +98,15 @@ export const getCustomerTags = async () => {
   return response.json();
 };
 
-// TODO: migrate from db
-export const getCampaigns = () => JSON.parse(localStorage.getItem("campaigns") ?? "[]");
+export const getCampaigns = async () => {
+  const response = await fetch(`${API_BASE_URL}/campaigns`);
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch campaigns: ${response.status}`);
+  }
+
+  return response.json();
+};
 
 export const createCampaign = async (campaign) => {
   const response = await fetch(`${API_BASE_URL}/campaigns`, {

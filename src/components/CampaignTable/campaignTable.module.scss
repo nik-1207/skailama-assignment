@@ -64,7 +64,7 @@
   color: rgba(239, 68, 68, 1);
 }
 
-.status-active,
+.status-running,
 .status-disabled,
 .status-expired {
   display: inline-flex;
@@ -78,7 +78,7 @@
   font-weight: 700;
 }
 
-.status-active {
+.status-running {
   background: rgba(220, 252, 231, 1);
   color: rgba(22, 101, 52, 1);
 }

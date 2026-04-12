@@ -30,7 +30,7 @@ export const CreateCampaign = () => {
   const setRoute = useRouteStore((state) => state.setRoute);
 
   const timezone = activeShop?.timezone ?? TIMEZONE_OPTIONS[0];
-  const editingCampaign = campaigns.find((campaign) => campaign.id === editingCampaignId) ?? null;
+  const editingCampaign = campaigns.find((campaign) => campaign._id === editingCampaignId) ?? null;
   const initialValues = useMemo(
     () => getInitialValues({ activeShop, editingCampaign, timezone }),
     [activeShop, editingCampaign, timezone],
