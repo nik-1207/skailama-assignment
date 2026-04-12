@@ -31,11 +31,15 @@ const getCampaignStatus = (campaign) => {
     }
   }
 
-  return "active";
+  if (!campaign.isEnabled) {
+    return "disabled";
+  }
+
+  return "running";
 };
 
 const STATUS_LABELS = {
-  active: "ACTIVE",
+  running: "RUNNING",
   disabled: "DISABLED",
   expired: "EXPIRED",
 };
