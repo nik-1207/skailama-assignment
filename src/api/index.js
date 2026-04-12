@@ -121,14 +121,21 @@ export const createCampaign = async (campaign) => {
     throw new Error(`Failed to create campaign: ${response.status}`);
   }
 
-  const result = await response.json();
-  return result.data ?? result;
+  return response.json();
 };
 
 // TODO: migrate from db
-export const deleteCampaign = (campaignId) => {
-  const nextCampaigns = getCampaigns().filter((campaign) => campaign.id !== campaignId);
-  localStorage.setItem("campaigns", JSON.stringify(nextCampaigns));
+export const deleteCampaign = async (campaignId) => {
+  const response = await fetch(`${API_BASE_URL}/campaigns/${campaignId}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to delete campaign: ${response.status}`);
+  }
+
+  const result = await response.json();
+  return result.data ?? result;
 };
 
 export const updateCampaign = (campaignId, nextCampaign) => {

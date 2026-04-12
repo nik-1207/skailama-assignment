@@ -13,7 +13,7 @@ export const useCampaignStore = create((set) => ({
   addCampaign: async (campaign) => {
     const nextCampaign = await createCampaign(campaign);
     set((state) => ({
-      campaigns: [...state.campaigns, nextCampaign],
+      campaigns: [...state.campaigns, nextCampaign.data],
     }));
     return nextCampaign;
   },
@@ -26,8 +26,8 @@ export const useCampaignStore = create((set) => ({
       editingCampaignId: null,
     }));
   },
-  removeCampaign: (campaignId) => {
-    deleteCampaign(campaignId);
+  removeCampaign: async (campaignId) => {
+    await deleteCampaign(campaignId);
     set((state) => ({
       campaigns: state.campaigns.filter((campaign) => campaign._id !== campaignId),
       editingCampaignId: state.editingCampaignId === campaignId ? null : state.editingCampaignId,
